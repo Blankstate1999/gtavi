@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonida Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Mr+Dafoe&family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap">
+<style>
+/* VOICE: a fan-made travel guide that's also your progress logbook; witty, tidy
+   IDEA: a Vice City souvenir guidebook, sunset band, neon script, stamped sidebars
+   PICTURE: your own screenshots in each entry's hero slot; the checklists themselves
+   COLOUR and TYPE: magenta + cyan neon on sand paper (night: indigo); Anton, Mr Dafoe, Lato
+   LAYOUT: sticky scrolling tabs, one calm column up to 780px, big touch targets */
+:root{color-scheme:light dark;
+--bg:light-dark(#fff5ea,#150d29);--card:light-dark(#ffffff,#211843);--ink:light-dark(#231b2e,#f5eef8);
+--mute:light-dark(#6e6478,#b4a9c6);--line:light-dark(#efdccb,#33285a);--mag:light-dark(#d0106f,#ff4fa3);
+--cyan:light-dark(#0a8fa1,#3fd6e8);--cyanbg:light-dark(#e2f7fa,#16324a);--night:#1c1236;--track:light-dark(#f3e4d6,#2a2050)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Lato,system-ui,sans-serif;overflow-x:clip}
+header{background:var(--night);color:#fff5ea;padding:22px max(5vw,16px) 18px;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,#e4157f,#16c1d6)}
+header svg{position:absolute;right:-30px;top:-10px;width:190px;height:190px;opacity:.95}
+h1{font:400 clamp(34px,7vw,48px)/1.05 Anton,Impact,sans-serif;margin:6px 0 0;position:relative;z-index:1;text-shadow:0 2px 12px rgba(28,18,54,.6)}
+.neon{font-family:"Mr Dafoe","Brush Script MT",cursive;color:var(--mag);font-size:clamp(24px,5vw,30px);line-height:1;font-weight:400}
+header .neon{color:#ff5fae;position:relative}
+.stats{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1;margin-top:14px;max-width:520px}
+.stat{background:rgba(40,28,78,.88);backdrop-filter:blur(4px);border-radius:12px;padding:9px 14px;flex:1 1 130px}
+.stat b{display:block;font:400 26px/1.1 Anton,Impact,sans-serif;color:#5fe3f2}
+.stat span{font-size:13px;color:#d9cfe8}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;overflow-x:auto;padding:0 max(4vw,6px);scrollbar-width:none}
+nav a{flex:none;padding:14px 12px 11px;color:var(--mute);text-decoration:none;font-weight:700;font-size:15px;border-bottom:3px solid transparent;min-height:48px}
+nav a[aria-current=page]{color:var(--ink);border-color:var(--mag)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+main{max-width:780px;margin:0 auto;padding:16px 16px 40px}
+section[hidden]{display:none}
+.kicker{color:var(--mag);font:900 12px/1.2 Lato,sans-serif;letter-spacing:.12em;margin:22px 0 2px}
+h2{font:400 clamp(28px,6vw,36px)/1.05 Anton,Impact,sans-serif;margin:0;color:var(--ink)}
+h3{font:400 20px/1.15 Anton,Impact,sans-serif;margin:16px 0 4px}
+.tag{text-align:right;margin:-6px 0 10px}
+.note{color:var(--mute);font-size:14px;margin:4px 0 12px}
+.lede{font-style:italic;font-size:17px;margin:12px 0}
+.entry{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px 18px 18px;margin:14px 0 22px}
+.entry>.kicker{margin-top:16px}
+.shot{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/8;background:linear-gradient(100deg,#e4157f,#16c1d6);margin:10px 0 4px;display:grid;place-items:center}
+.shot.tall{aspect-ratio:4/5}
+.shot.map{aspect-ratio:2805/3840}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shot .sun{position:absolute;right:12%;top:16%;width:22%;aspect-ratio:1;border-radius:50%;background:rgba(255,245,234,.28)}
+.shot .stripes{position:absolute;inset:auto 0 0 0;height:22%;background:repeating-linear-gradient(0deg,rgba(28,18,54,.25) 0 3px,transparent 3px 11px)}
+.shot label{position:relative;z-index:1;background:rgba(28,18,54,.72);color:#fff;border-radius:22px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px}
+.shot input{position:absolute;opacity:0;width:1px;height:1px}
+.shot.has label{position:absolute;right:8px;bottom:8px;padding:6px 12px;min-height:36px;font-size:13px}
+.shot .rm{position:absolute;left:8px;bottom:8px;z-index:1;background:rgba(28,18,54,.72);color:#fff;border:0;border-radius:18px;padding:6px 12px;font:700 13px Lato,sans-serif;cursor:pointer;min-height:36px}
+.cap{font-size:13px;color:var(--mute);margin:0 0 6px}
+.split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;align-items:start}
+@media(max-width:600px){.split{grid-template-columns:1fr}}
+.facts{border-top:6px solid var(--mag);border-radius:12px;background:var(--bg);padding:10px 14px;margin:10px 0}
+.facts.cy{border-color:var(--cyan)}
+.facts h4{font:400 18px/1.1 Anton,Impact,sans-serif;margin:2px 0 6px}
+.facts dl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:0;font-size:15px}
+.facts dt{font:900 11px/1.9 Lato,sans-serif;letter-spacing:.06em;color:var(--cyan);white-space:nowrap}
+.facts dd{margin:0}
+.stars{color:var(--mag);letter-spacing:2px}.stars i{color:var(--line);font-style:normal}
+.box{border-radius:12px;padding:12px 14px;margin:12px 0;font-size:15px}
+.box h4{font:400 17px/1.1 Anton,Impact,sans-serif;margin:0 0 4px}
+.dm{background:var(--cyanbg);border-left:6px solid var(--cyan)}
+.rf{background:var(--night);color:#f2ebf8}
+.rf h4{color:#ff5fae}.rf h4::before{content:"";display:block;width:44px;height:4px;background:#ff5fae;margin-bottom:6px}
+.pl{color:var(--mag);font-weight:900}
+.notes{margin-top:14px}
+.notes .neon{font-size:24px}
+.notes textarea{width:100%;min-height:96px;font:16px/1.6 Lato,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
+ background:var(--card) repeating-linear-gradient(transparent 0 calc(1.6em - 1px),color-mix(in srgb,var(--cyan) 30%,transparent) calc(1.6em - 1px) 1.6em);background-attachment:local;background-position:0 8px;resize:vertical}
+.entry.sm{margin:10px 0;padding:8px 16px 4px}
+.grp{font:900 12px/1.2 Lato,sans-serif;letter-spacing:.1em;color:var(--cyan);margin:18px 0 6px;text-transform:uppercase}
+#peopleMain{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 14px}
+#peopleMain .shot.tall{margin-top:8px}
+.stub{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;align-items:center}
+.stub h3{margin:6px 0 0}.stub .badge{font:900 11px Lato,sans-serif;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:20px;padding:4px 10px}
+details.more>summary{cursor:pointer;font-weight:700;color:var(--cyan);padding:8px 0;min-height:44px;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+/* missions */
+details.ch{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden}
+details.ch>summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:1fr auto 20px;gap:4px 12px;align-items:center;min-height:56px}
+details.ch>summary::-webkit-details-marker{display:none}
+.chn{font:400 22px/1.1 Anton,Impact,sans-serif}
+.ct{display:block;font:400 13px/1.3 Lato,sans-serif;color:var(--mute);margin-top:2px}
+.cnt{font-variant-numeric:tabular-nums;font-weight:700;color:var(--mute);white-space:nowrap}
+.chev{transition:transform .2s;color:var(--mute)}details[open] .chev{transform:rotate(90deg)}
+.bar{grid-column:1/-1;height:8px;background:var(--track);border-radius:9px;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#16c1d6,#e4157f);border-radius:9px;transition:width .3s}
+.bar .need{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.55}
+.done .chn::after{content:" ✓";color:var(--mag)}
+.m{display:flex;align-items:center;gap:12px;padding:6px 16px;border-top:1px solid var(--line);min-height:52px}
+input[type=checkbox]{appearance:none;width:28px;height:28px;border:2px solid var(--cyan);border-radius:8px;flex:none;display:grid;place-content:center;cursor:pointer;margin:0;background:transparent}
+input[type=checkbox]:checked{background:var(--mag);border-color:var(--mag)}
+input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-2px)}
+.m label{font-weight:700;cursor:pointer;padding:10px 0;flex:1}
+.m .num{display:inline-block;min-width:2em;color:var(--mute);font-weight:400;font-variant-numeric:tabular-nums}
+.m.on label{color:var(--mute);text-decoration:line-through}
+.m .opt{font-weight:400;color:var(--mute)}
+.m.oh{min-height:40px;font-size:13px;font-weight:700;color:var(--mute);background:var(--bg)}
+.m .nm{flex:1;font:16px Lato,sans-serif;border:0;border-bottom:1px dashed var(--line);background:transparent;color:var(--ink);padding:8px 2px}
+.btn{min-height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:700 15px Lato,sans-serif;cursor:pointer}
+.btn.warn{border-color:var(--mag);color:var(--mag)}
+/* counters */
+.row{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center}
+.row h5{margin:0;font-size:16px}
+.row small{display:block;color:var(--mute);font-size:13px;font-weight:400}
+.step{display:flex;align-items:center;gap:4px}
+.step button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.step input{width:62px;height:44px;text-align:center;font:700 16px Lato,sans-serif;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);-moz-appearance:textfield}
+.step input::-webkit-inner-spin-button{appearance:none}
+.autotot{font:400 34px/1 Anton,Impact,sans-serif;color:var(--mag);padding:0 6px;font-variant-numeric:tabular-nums}
+.meta{grid-column:1/-1;display:flex;justify-content:space-between;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.meta .ok{color:var(--mag);font-weight:900}
+/* golf + radio */
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;background:var(--night);color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0;font-size:14px}
+.strip b{display:block;color:#5fe3f2;font:900 11px Lato,sans-serif;letter-spacing:.08em}
+@media(max-width:600px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{overflow-x:auto;margin:8px 0}
+.card table{border-collapse:collapse;width:100%;min-width:480px;font-variant-numeric:tabular-nums}
+.card th{background:var(--mag);color:#fff;font:900 12px Lato,sans-serif;padding:6px 4px}
+.card td{border-bottom:1px solid var(--line);text-align:center;padding:2px}
+.card td:first-child,.card th:first-child{text-align:left;padding-left:8px;white-space:nowrap}
+.card input{width:100%;max-width:40px;height:40px;text-align:center;font:700 16px Lato,sans-serif;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);-moz-appearance:textfield}
+.tracks{columns:2 260px;column-gap:18px;margin:8px 0}
+.tr{display:flex;gap:10px;align-items:center;break-inside:avoid;padding:5px 0;border-bottom:1px solid var(--line);min-height:44px}
+.tr label{cursor:pointer;font-size:15px;line-height:1.3}
+.tr b{font-weight:900}.tr span{color:var(--mute)}
+.tr input:checked+label b{color:var(--mag)}
+.top5{display:grid;gap:8px;counter-reset:t}
+.top5 input{width:100%;height:44px;font:16px Lato,sans-serif;border:0;border-bottom:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;padding:0 4px}
+.top5 label{display:flex;align-items:center;gap:10px;color:#5fe3f2;font-weight:900}
+.filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.filter input[type=search]{flex:1 1 200px;height:44px;font:16px Lato,sans-serif;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:var(--card);color:var(--ink)}
+.tools{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
+.tools summary{padding:12px 0;cursor:pointer;font-weight:700;min-height:44px}
+.tools textarea{width:100%;min-height:80px;font:13px ui-monospace,monospace;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.sync{font-size:13px;color:var(--mute);text-align:center;margin-top:14px}
+.src{font-size:13px;color:var(--mute);margin-top:12px}
+@media(prefers-reduced-motion:reduce){.bar i,.chev{transition:none}}
+</style>
+</head>
+<body>
+<header>
+<svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5fae"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs><circle cx="112" cy="96" r="64" fill="url(#sg)"/><g fill="#1c1236"><rect x="30" y="112" width="170" height="6"/><rect x="30" y="126" width="170" height="8"/><rect x="30" y="142" width="170" height="11"/><rect x="30" y="160" width="170" height="40"/></g><path d="M64 200 C68 160 72 128 82 100" stroke="#0f0a20" stroke-width="7" fill="none" stroke-linecap="round"/><g fill="#0f0a20"><path d="M82 100 q-30 -6 -48 10 q24 -4 48 -10z"/><path d="M82 100 q-14 -26 -40 -30 q20 14 40 30z"/><path d="M82 100 q10 -30 36 -34 q-22 16 -36 34z"/><path d="M82 100 q30 -4 46 14 q-24 -6 -46 -14z"/></g><rect x="30" y="160" width="170" height="2" fill="#16c1d6"/></svg>
+<div class="neon">welcome to</div>
+<h1>Leonida Field Guide</h1>
+<div class="stats">
+<div class="stat"><b id="sStory">0/91</b><span>story missions</span></div>
+<div class="stat"><b id="sGoals">0/13</b><span>100% goals met</span></div>
+</div>
+</header>
+<nav aria-label="Sections" id="nav"></nav>
+<main>
+
+<section id="t-places">
+<p class="kicker">PLACES • REGION GUIDE</p>
+<h2>Places</h2>
+<p class="note">A traveller's guide to all six regions: geography and sights only, no story.</p>
+<article class="entry" id="e-map"><p class="kicker">OVERVIEW</p><h2>The state of Leonida</h2><div class="tag neon">wish you were here</div>
+<div class="shot tall map" data-img="map"></div>
+<p>Six regions, one long peninsula and a lot of coastline: the neon of Vice City in the south-east, the Keys trailing off the tip, the Grassrivers wetlands in the middle, and Port Gellhorn, Ambrosia and Mount Kalaga to the north and west.</p></article>
+<article class="entry" id="e-keys">
+<p class="kicker">REGION</p><h2>The Leonida Keys</h2><div class="tag neon">island time</div>
+<div class="shot" data-img="keys"></div><p class="cap">Wish you were here: the Keys, postcard-ready.</p>
+<p class="lede">Strung off the southern tip of Leonida like a broken necklace, the Keys are where the state slows down, sobers up a little, and goes fishing. One road, a lot of water, and everybody knows everybody's business.</p>
+<h3>Getting there</h3>
+<p>Drive south out of Vice-Dale County and pick up the <span class="pl">Keys Causeway</span>, which lands you on Key Lento. From there it's <span class="pl">Route 1</span> all the way down: long, low bridges with the Gulf on one side and the Atlantic glare on the other. Go at sunset. Go slowly. If you're in a hurry, you're in the wrong region.</p>
+<h3>The islands</h3>
+<p><span class="pl">Key Lento</span> is the main town and the closest thing the Keys have to a high street: a marina, a bait-and-beer bar called the <span class="pl">Rusty Anchor</span>, and Kenton's <span class="pl">Island Dreams</span> dive shop, the place to start if you fancy treasure under the waves. Further down the chain, <span class="pl">Catalan Key</span> has the lighthouse, and <span class="pl">East Key</span> and <span class="pl">Goose Key</span> are quieter still.</p>
+<div class="box dm"><h4>Don't miss</h4><b>A wreck dive with Kenton.</b> Pick up a metal detector, follow the pink search rings and bring something shiny back to the surface. It's the Keys' oldest pastime, with more paperwork.</div>
+<div class="box rf"><h4>The real Florida</h4>Key Lento is a nod to <b>Key Largo</b>, the largest island in the real Florida Keys. Route 1 echoes the <b>Overseas Highway</b> (US 1), and keep an eye out for a very familiar-looking long bridge, the game's take on the <b>Seven Mile Bridge</b>.</div>
+<p class="note"><b>Best for</b> diving, sunsets, boats and keeping a low profile.</p>
+<div class="notes" data-note="keys"></div>
+</article>
+<article class="entry" id="e-place0">
+<p class="kicker">REGION • VICE-DALE COUNTY</p><h2>Vice City</h2><div class="tag neon">sun and fun</div>
+<div class="shot" data-img="place0"></div><p class="cap">Ocean Beach, as the postcards promise it.</p>
+<p class="lede">Leonida's neon capital sells itself as America's sun and fun capital, and for once the brochure isn't lying. It's loud, beautiful, expensive and slightly out of control, often all on the same block.</p>
+<h3>Getting there</h3>
+<p>Vice City is the county seat of <span class="pl">Vice-Dale County</span>, filling the south-east corner of the state. The beach districts sit on a <span class="pl">barrier island</span> across the causeways from the mainland, and the city's metro is the easiest way to hop between the two once the traffic sets in.</p>
+<h3>Neighbourhoods</h3>
+<p><span class="pl">Ocean Beach</span> is the postcard: pastel Art Deco hotels, white sand and a tourist strip that never really sleeps. Just south, <span class="pl">South Beach</span> is where the neon and the nightclubs take over. Back on the mainland, <span class="pl">Downtown</span> is all glass towers and money, while <span class="pl">Little Cuba</span> trades in strong coffee and panaderías, and <span class="pl">La Perle</span> is the grittier, Caribbean-flavoured neighbourhood the tourists rarely see. Down on the water, the <span class="pl">VC Port</span> keeps the city stocked, legitimately and otherwise.</p>
+<div class="box dm"><h4>Don't miss</h4><b>The Tisha-Wocka flea market.</b> Rockstar name-checks it as a Vice City essential, and it's the place to find something you didn't know you needed and probably shouldn't own.</div>
+<div class="box rf"><h4>The real Florida</h4>Vice City is Miami. Ocean Beach is <b>South Beach</b> and its Art Deco Historic District along Ocean Drive, Little Cuba is <b>Little Havana</b> and Calle Ocho, Downtown's towers echo <b>Brickell</b>, and La Perle is <b>Little Haiti</b>.</div>
+<p class="note"><b>Best for</b> nightlife, beaches, people-watching and spending money you don't have.</p>
+<div class="notes" data-note="place0"></div>
+</article>
+<article class="entry" id="e-place1">
+<p class="kicker">REGION • THE SOUTHERN WETLANDS</p><h2>Grassrivers</h2><div class="tag neon">there be gators</div>
+<div class="shot" data-img="place1"></div><p class="cap">Golden hour on the river of grass.</p>
+<p class="lede">South of everything and wetter than anywhere, Grassrivers is Leonida with the pavement taken away: sawgrass to the horizon, mangroves at the edges, and something with teeth just under the surface.</p>
+<h3>Getting there</h3>
+<p>The wetlands spread across the south of the state, just above the Keys and south-west of Vice City. Most cars are hopeless out here, so it's an <span class="pl">airboat</span> or nothing. Expect a lot of noise and a lot of spray.</p>
+<h3>What's there</h3>
+<p>Mostly water, grass and wildlife: more than <span class="pl">170 species</span>, from alligators and flamingos to pelicans and manatees. Hunters work the edges of the marsh, and the state's <span class="pl">POACH</span> wildlife officers patrol it to keep them honest. The odd shack, bait shop and boat ramp is about as close as Grassrivers gets to a town.</p>
+<div class="box dm"><h4>Don't miss</h4><b>An airboat run at sunset.</b> Cut the engine in the middle of nowhere, wait, and let the flamingos and gators come to you. Bring the camera: it's the best place in the state to fill up the <a href="#wildlife">Wildlife</a> tab.</div>
+<div class="box rf"><h4>The real Florida</h4>Grassrivers is the <b>Everglades</b>, the vast, slow-moving "river of grass" that drains south from Lake Okeechobee to Florida Bay. Airboat tours are a real Florida rite of passage.</div>
+<p class="note"><b>Best for</b> wildlife, airboats, photography and getting away from absolutely everyone.</p>
+<div class="notes" data-note="place1"></div>
+</article>
+<article class="entry" id="e-place2">
+<p class="kicker">REGION • KELLY COUNTY</p><h2>Port Gellhorn</h2><div class="tag neon">the forgotten coast</div>
+<div class="shot" data-img="place2"></div><p class="cap">A beach town that's seen better decades.</p>
+<p class="lede">Rockstar calls it a failed resort on a forgotten coast, and Port Gellhorn wears that description like a faded souvenir T-shirt. The sea's still nice. Almost nothing else is new.</p>
+<h3>Getting there</h3>
+<p>Port Gellhorn sits on the Gulf side of the state in <span class="pl">Kelly County</span>, north-west of Vice City. The coastal freeway runs the length of the region, and the town spills off it into motels, strip malls and trailer parks.</p>
+<h3>What's there</h3>
+<p>The <span class="pl">Starlet Motel</span> (ask Linda about the rent), the <span class="pl">Delights</span> strip club, the <span class="pl">Crossroad Park Minimall</span>, Moses' garage and a lot of places that buy and sell things without asking questions. Out of town, Kelly County has the real entertainment: the <span class="pl">Gellhorn International Raceway</span> and, off Route 32, the <a href="#culture">Thrillbilly Mud Club</a>.</p>
+<div class="box dm"><h4>Don't miss</h4><b>A night at the races.</b> The Gellhorn International Raceway is proper circuit racing with laps and a timer, and the cleanest fun in town.</div>
+<div class="box rf"><h4>The real Florida</h4>Port Gellhorn is modelled on <b>Panama City</b> and the surrounding Bay County towns on the Panhandle's Gulf coast: once a booming spring-break resort, now a lot quieter.</div>
+<p class="note"><b>Best for</b> cheap rooms, racing, mud and laying low.</p>
+<div class="notes" data-note="place2"></div>
+</article>
+<article class="entry" id="e-place3">
+<p class="kicker">REGION • AMBROSIA COUNTY</p><h2>Ambrosia</h2><div class="tag neon">keeping Leonida sweet</div>
+<div class="shot" data-img="place3"></div><p class="cap">Cane fields, smokestacks and the refinery that runs the town.</p>
+<p class="lede">In the middle of the state, on the shore of Lake Leonida, Ambrosia runs on sugar, steel and old-school values. The refinery gives the town its jobs; the bikers, by Rockstar's account, provide almost everything else.</p>
+<h3>Getting there</h3>
+<p>Ambrosia is Leonida's inland heart, on the south-western bank of <span class="pl">Lake Leonida</span>. Follow the highway signs out of Vice City and keep going until the skyline turns into smokestacks and the fields start smouldering.</p>
+<h3>What's there</h3>
+<p>The <span class="pl">Allied Crystal</span> sugar refinery dominates everything: the skyline, the jobs and, word has it, the local politics. Around it are miles of cane field, freight yards and the kind of small-town main street where everybody knows whose bike is outside the bar. That bike probably belongs to the <a href="#culture">Final Chapter MC</a>.</p>
+<div class="box dm"><h4>Don't miss</h4><b>The refinery after dark.</b> Allied Crystal lit up at night, with smoke drifting over the cane, is one of the most striking sights in the state. Admire it from the road.</div>
+<div class="box rf"><h4>The real Florida</h4>Ambrosia is <b>Clewiston</b>, "America's Sweetest Town", on the south shore of <b>Lake Okeechobee</b>, where sugar has been the main industry for generations and cane is still burned before harvest.</div>
+<p class="note"><b>Best for</b> road trips, bikers, small-town bars and big skies.</p>
+<div class="notes" data-note="place3"></div>
+</article>
+<article class="entry" id="e-place4">
+<p class="kicker">REGION • THE NORTHERN BORDER</p><h2>Mount Kalaga</h2><div class="tag neon">wild, wild country</div>
+<div class="shot" data-img="place4"></div><p class="cap">Pine forest and canyon country on the state line.</p>
+<p class="lede">Up on the northern border with Gloriana, Leonida finally gets some altitude. Mount Kalaga is the state's great outdoors: forest, rivers, canyons, and a backwoods population Rockstar describes as hillbilly mystics and paranoid radicals.</p>
+<h3>Getting there</h3>
+<p>Head north until the swamp turns into pine forest and the roads start to climb. The national park runs along the <span class="pl">Gloriana</span> state line, with winding roads, bridges and plenty of dirt tracks for anything with off-road tyres.</p>
+<h3>What's there</h3>
+<p>Rockstar sells it on three things: <span class="pl">hunting</span>, <span class="pl">fishing</span> and <span class="pl">off-road trails</span>. Add kayaking through the canyons, dirt bikes and quads tearing up the mud, and deer and big cats in the woods. Out here, the locals would rather you kept driving.</p>
+<div class="box dm"><h4>Don't miss</h4><b>A hunting trip.</b> Mount Kalaga is the home of Leonida's hunting activity: bring a rifle, pick a ridge, and try not to end up as a story the locals tell.</div>
+<div class="box rf"><h4>The real Florida</h4>Real Florida doesn't really do mountains: its highest natural point, <b>Britton Hill</b> near the Alabama line, is only 345 feet. Mount Kalaga borrows the forested hills of the <b>Florida–Georgia line</b> and turns them up a notch.</div>
+<p class="note"><b>Best for</b> hunting, fishing, dirt bikes, kayaks and nobody asking where you've been.</p>
+<div class="notes" data-note="place4"></div>
+</article>
+</section>
+
+<section id="t-people" hidden>
+<p class="kicker">PEOPLE • LOCALS YOU'LL MEET</p>
+<h2>People</h2>
+<p class="note">Full write-ups for people you've got to know. Everyone else has a placeholder for a photo and notes until they're written up.</p>
+<h3>Main characters</h3>
+<div id="peopleMain"></div>
+<h3>Minor characters</h3>
+<h4 class="grp">Chapter 1 • The Keys</h4>
+<article class="entry" id="e-kenton">
+<p class="kicker">CHAPTER 1</p><h2>Kenton</h2><div class="tag neon">finders keepers</div>
+<div class="split">
+<div><div class="shot tall" data-img="kenton"></div><p class="cap">Kenton, behind the counter at Island Dreams.</p></div>
+<div class="facts cy"><h4>Fact file</h4><dl>
+<dt>JOB</dt><dd>Runs Island Dreams dive shop</dd>
+<dt>WHERE</dt><dd>Key Lento, the Leonida Keys</dd>
+<dt>FIRST MET</dt><dd>Chapter 1, as Jason</dd>
+<dt>OFFERS</dt><dd>Treasure-diving side jobs</dd>
+<dt>GOOD FOR</dt><dd>Early money, sunburn</dd></dl></div>
+</div>
+<p>Every coastal town has a man who's sure the next dive is the big one, and in Key Lento it's Kenton. He sends you down with a detector and a hunch, and you come back up with something worth selling, or at least something worth a story.</p>
+<div class="box dm"><h4>Gone quiet?</h4>Kenton disappears for a while after Chapter 1. He's back once Jason's story picks up again; if he hasn't texted, try calling Brian as Jason. All seven treasure sets stay available after the story ends.</div>
+<div class="notes" data-note="kenton"></div>
+</article>
+<div id="minorKeys"></div>
+<h4 class="grp">Chapter 2 • Port Gellhorn and Kelly County</h4>
+<article class="entry" id="e-linda">
+<p class="kicker">CHAPTER 2</p><h2>Linda</h2><div class="tag neon">no vacancy for nonsense</div>
+<div class="split">
+<div><div class="shot tall" data-img="linda"></div><p class="cap">Linda outside the Starlet Motel, about to mention the rent.</p></div>
+<div class="facts"><h4>Fact file</h4><dl>
+<dt>JOB</dt><dd>Manager, the Starlet Motel</dd>
+<dt>WHERE</dt><dd>Front desk, Kelly County</dd>
+<dt>FIRST MET</dt><dd>Chapter 2, as Lucia</dd>
+<dt>PLAYED BY</dt><dd>Lisa Emery</dd>
+<dt>WARMTH</dt><dd class="stars" aria-label="1 out of 5">★<i>★★★★</i></dd>
+<dt>PATIENCE</dt><dd class="stars" aria-label="2 out of 5">★★<i>★★★</i></dd>
+<dt>GOOD FOR</dt><dd>A room, eventually</dd></dl></div>
+</div>
+<p class="lede">Every road trip has one: the motel manager who has heard every story, believed none of them and would like the money now, please.</p>
+<p>Linda runs the <span class="pl">Starlet Motel</span> the way a lighthouse runs a coastline: she isn't there to make you feel welcome, she's there so you know where the rocks are. When Lucia and Jason turn up needing somewhere to lie low, the conversation is short and almost entirely about money. A night costs what a night costs, and it's due before the key leaves the counter.</p>
+<p>She's back again when the rent slips. Linda doesn't do threats, exactly. She does <em>reminders</em>, delivered with the flat patience of someone who has evicted tougher guests than you.</p>
+<h3>Why she matters</h3>
+<p>Leonida is a state of grand schemes, and Linda is its counterweight: the small, unglamorous reality of a bill that has to be paid. For Lucia and Jason, even standing still costs money.</p>
+<p><b>Local etiquette:</b> pay up front, don't haggle, and don't ask about the ice machine.</p>
+<div class="notes" data-note="linda"></div>
+</article>
+<div id="minorPG"></div>
+</section>
+
+<section id="t-culture" hidden>
+<p class="kicker">CULTURE • GANGS AND SCENES</p>
+<h2>Culture</h2>
+<p class="note">The tribes of Leonida: who runs what, and who's covered in mud.</p>
+<h3>Subcultures</h3>
+<article class="entry" id="e-mud">
+<p class="kicker">SUBCULTURE • THE MUDDERS</p><h2>Thrillbilly Mud Club</h2><div class="tag neon">get dirty, get paid</div>
+<div class="shot" data-img="mud"></div><p class="cap">Mud-spattered and loving it: a Thrillbilly regular salutes the camera.</p>
+<div class="split">
+<div class="facts"><h4>Fact file</h4><dl>
+<dt>WHERE</dt><dd>Route 32, Kelly County</dd>
+<dt>SIDE MISSION</dt><dd>Thrillbillies (Strangers and Freaks)</dd>
+<dt>FROM</dt><dd>Billy, via Wyman</dd>
+<dt>UNLOCKS</dt><dd>After "Coffee Break", Chapter 2</dd>
+<dt>PRIZE</dt><dd>Up to $2,500 for first place</dd>
+<dt>FOR 100%</dt><dd>Yes</dd></dl></div>
+<div><p style="margin-top:10px">Out past the edges of the map that tourists bother with, Leonida keeps its weekend religion: engines, beer and a bowl of mud deep enough to lose a truck in. The Thrillbilly Mud Club is where the state's off-road crowd comes to race, show off a lift kit and get gloriously, irreversibly filthy.</p>
+<label class="m" style="border:1px solid var(--line);border-radius:12px"><input type="checkbox" data-flag="thrillbillies"> <span style="font-weight:700">Thrillbillies completed</span></label></div>
+</div>
+<p>Wyman tips you off about Billy's dirt races, and the club appears on your map afterwards. Stop by the merch stand at the entrance first: the Thrillbilly shirts and vests are the dress code, and both Jason and Lucia can kit out.</p>
+<div class="box dm"><h4>Our tip</h4>If you care about the story more than the podium, just finish clean. If you want the full $2,500, read the corners early and don't try to barge through every rider.</div>
+<div class="box rf"><h4>The real Florida</h4>The club is a nod to <b>Redneck Mud Park</b> near Punta Gorda, an 880-acre stretch of mud bowls and trails outside Fort Myers. It throws big spring and autumn weekends that draw crowds in the tens of thousands.</div>
+<div class="notes" data-note="mud"></div>
+</article>
+<h3>Gangs</h3>
+<div id="gangs"></div>
+</section>
+
+<section id="t-wildlife" hidden>
+<p class="kicker">WILDLIFE • FIELD RECORD</p>
+<h2>Wildlife</h2>
+<div class="tag neon">don't feed the gators</div>
+<p class="lede">Leonida is wilder than its postcards. Get out of the car, get the camera out, and the state starts filling up with things that bite, fly, swim and occasionally sunbathe on the golf course.</p>
+<p>Studying an animal adds it to your database. For 100% you need 100 of the 255 animals, so you don't need to find every last heron.</p>
+<div id="wildTotal"></div>
+<h3>By group</h3>
+<p class="note">Group sizes come from an early guide, so treat them as rough. "Other" covers the animals they leave out, so everything adds up to 255.</p>
+<div id="wildGroups"></div>
+<div class="box rf"><h4>The real Florida</h4>The Everglades is one of the most invaded wild places in the US. Burmese pythons, released or escaped pets, are now established across the real wetlands, and Florida runs public hunts to try to keep them in check.</div>
+<div class="notes" data-note="wildlife"></div>
+</section>
+
+<section id="t-missions" hidden>
+<p class="kicker">STORY • CHECKLIST</p>
+<h2>Missions</h2>
+<p class="note">Names are shown only for chapters you've finished. Later missions stay numbered so nothing gets spoiled, and you can add a name to each one as you tick it off.</p>
+<div id="chapters"></div>
+</section>
+
+<section id="t-activities" hidden>
+<p class="kicker">CULTURE • ATTRACTIONS</p>
+<h2>Activities</h2>
+<article class="entry" id="e-golf">
+<p class="kicker">MINI GOLF</p><h2>King Gator Golf</h2><div class="tag neon">putt with the reptiles</div>
+<div class="shot" data-img="golf"></div><p class="cap">The big gator presides over the greens.</p>
+<div class="strip"><div><b>WHERE</b>Buckskin Swamp, Vice-Dale County</div><div><b>HOLES</b>18</div><div><b>FOR 100%</b>Finish 2 of the 3 mini golf courses</div><div><b>MY BEST</b><span id="golfBest">Not played yet</span></div></div>
+<p>If Leonida had a state sport, it might well be adventure golf. King Gator is roadside Florida at its most gloriously over the top: themed putting holes with ramps, obstacles and moving parts, all overseen by a reptile with no interest in your handicap. Fewest strokes wins, and the course is open any time, so there's no rush.</p>
+<p><b>Our tip:</b> treat each hole as a puzzle first and a putt second. Watch the moving parts go round once before you swing, and save the power shots for the ramps.</p>
+<div class="box dm"><h4>Also in Leonida</h4><b>Frontier Adventure Golf</b>, Waning Sands, Leonard County.<br><b>Dino Golf Challenge</b>, Frogswater, Kelly County.<br>Your rounds and best scores are under <i>Progress › Activities › Sports</i>.</div>
+<h3>Scorecard</h3>
+<p class="note">Fill in a round as you play. Your best total is kept above.</p>
+<div class="card" id="golfCard"></div>
+<div class="btns"><button class="btn" id="golfSave" type="button">Save round as best if lower</button><button class="btn" id="golfClear" type="button">Clear card</button></div>
+<div class="notes" data-note="golf"></div>
+</article>
+<article class="entry" id="e-dive">
+<p class="kicker">SIDE JOB</p><h2>Treasure diving</h2><div class="tag neon">x marks the reef</div>
+<p>Kenton's dives off the Keys are the best early earner in the game: seven treasure sets, a metal detector, and a lot of time spent upside down in clear water. Track your sets in <a href="#collectibles">Collectibles</a>.</p>
+<div class="notes" data-note="dive"></div>
+</article>
+</section>
+
+<section id="t-radio" hidden>
+<p class="kicker">CULTURE • ON THE RADIO</p>
+<h2>Flash FM</h2><div class="tag neon">pop, all night long</div>
+<div class="split">
+<div><div class="shot" data-img="flash"></div><p class="cap">Tune in, turn up.</p></div>
+<div class="facts cy"><h4>On air</h4><dl>
+<dt>SOUND</dt><dd>Pop and dance, old and new</dd>
+<dt>HOSTS</dt><dd>Robyn &amp; Alex</dd>
+<dt>VOICED BY</dt><dd>Robyn and Alex Consani</dd>
+<dt>SINCE</dt><dd>Vice City days</dd>
+<dt>LISTEN</dt><dd>In the car, or on foot through your phone</dd></dl></div>
+</div>
+<p>Flash FM is the city's oldest pop habit. Back in the Vice City era it ran on big-haired synthpop and new wave; today it's a glossy, sweat-on-the-dancefloor mix of current pop, club records and the kind of 2000s throwbacks you didn't realise you still knew every word of.</p>
+<p>The hosts are <span class="pl">Robyn</span> and <span class="pl">Alex</span>, voiced by Swedish pop royalty Robyn and model Alex Consani. Robyn even sneaks two of her own records onto the playlist, which seems only fair.</p>
+<div class="box rf"><h4>My Flash FM top five</h4><div class="top5" id="top5"></div></div>
+<h3>Tracklist <span id="trCount" class="note"></span></h3>
+<div class="filter"><input type="search" id="trq" placeholder="Search artist or song" aria-label="Search the tracklist"><label class="btn" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="trHide"> Hide heard</label></div>
+<div class="tracks" id="tracks"></div>
+<div class="notes" data-note="radio"></div>
+</section>
+
+<section id="t-collectibles" hidden>
+<p class="kicker">PROGRESS • 100%</p>
+<h2>Collectibles</h2>
+<p class="note">The line on each bar marks how many you need for 100% completion. Selling cards doesn't remove them from your collection.</p>
+<div id="col100"></div>
+<h3>Progress database</h3>
+<div id="dbase"></div>
+<h3>Just for fun</h3>
+<p class="note">These don't count toward 100%.</p>
+<div id="colExtra"></div>
+</section>
+
+<details class="tools">
+<summary>Backup and reset</summary>
+<p class="note">Copy your progress code to keep it safe, or paste one in to restore it. Photos aren't included in the code.</p>
+<textarea id="code" aria-label="Progress code"></textarea>
+<div class="btns">
+<button class="btn" id="copy" type="button">Copy code</button>
+<button class="btn" id="restore" type="button">Restore from code</button>
+<button class="btn warn" id="reset" type="button">Reset everything</button>
+</div>
+</details>
+<p class="sync" id="sync">Saved on this device</p>
+<p class="src">A fan-made guide. Mission and collectible counts are launch-week figures from Red Bull, Dexerto, The Games Wiki, PowerPyx and Mobalytics, and may change as guides are updated.</p>
+</main>
+<script>
+{
+const CH=[22,11,26,25,7];
+const TITLES=["Just Like Paradise","Paradise Lost"];
+const NAMES=[["Prologue","Gone Fishing","Gear Up","Just A Scratch","Lab Fees","Unwanted Attention","Pipework","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Buck Me","Clean Up After Donnie","Down to Earth","Clear Skies","Day Release","Swamped","","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],
+["What's in the Bag?","Ambulance Chaser","Just Moved In","Girls' Trip","Moses","Daily Driver","Slam Dunk","Breakfast Run","Coffee Break","Afternoon Delight","Checking Out"]];
+const known=(i,j)=>(NAMES[i]&&NAMES[i][j])||"";
+const OPT=[["Get Shirley's Rum","Steal the Scooter"],["Kingpin Bowling","Impounded Vehicle","Veteran Hunted (Jason only)"]];
+const C100=[["cards","Collectible cards","480 cards in 18 sets, counted by set",18,15],["waink","WAiNK locations","",108,100],["under","Underwater discoveries","",33,33],["mags","Magazines, books and comics","",34,30],["medit","Meditation spots","",18,15],["flam","Cocaine flamingos","",125,100],["play","Unique playlists","",2,2],["style","Discovered styles","",79,70],["kent","Kenton sets","Treasure diving with Kenton",7,5]];
+const CX=[["art","Ahol street art","",112,0],["mural","1010 murals","",5,0],["swap","Book swaps","",7,0],["wyman","Wyman's cars","Ultimate Edition only",5,0],["doub","Doubloons","Up to 99 can be sold",99,0],["meteor","Meteorites","No fixed total",0,0]];
+const WT=[["animals","Animals studied","Adds up automatically from the groups below",255,100]];
+const WG=[["hunt","Hunts","",61,0],["fish","Fish","",35,0],["mam","Mammals","",18,0],["pets","Cats and dogs","",34,0],["rep","Reptiles","",6,0],["bird","Birds","",60,0],["other","Other","Anything the groups above don't cover",41,0]];
+const animalSum=()=>WG.reduce((t,g)=>t+(S.c[g[0]]||0),0);
+function syncAnimals(){const v=animalSum();if(v)S.c.animals=v;else delete S.c.animals}
+const DB=[["veh","Vehicles (base models)","Scanned or owned",277,200],["wep","Standard weapons","",66,50],["wvar","Unique weapon variants","Not needed for 100%",130,0],["stand","Standout vehicles","Not needed for 100%",281,0]];
+const GOALS=[...C100,...WT,["veh",0,0,277,200],["wep",0,0,66,50]];
+const STUBS=[["Vice City","Leonida's neon capital: beaches, nightlife and money in a hurry.","Miami"],["Grassrivers","Wetlands, airboats and things with teeth.","The Everglades"],["Port Gellhorn","A faded Gulf-coast town that's seen better days.","Florida's Panhandle coast"],["Ambrosia","Inland sugar-refinery country.","Central Florida's sugar towns"],["Mount Kalaga","Leonida's wild national park, for hikers and hunters.","Florida's wild interior"]];
+const TRACKS=`Addison Rae|Fame Is a Gun
+Aluna, Jayda G|Mine O’ Mine
+Ariana Grande|Break Free
+Billie Eilish|Lunch
+Booty Luv|Shine
+Brittany Howard|Prove It To You
+The Black Keys|No Rain, No Flowers
+CA7RIEL|Sexy Magic
+Calvin Harris ft. Pharrell, Katy Perry & Big Sean|Feels
+Camelphat, Elderbrook|Cola
+Camila Cabello|Sweet Like Candy
+Carly Rae Jepsen|Run Away With Me
+Chappell Roan|Hot To Go!
+Charli XCX|Good Ones
+Chloe Moriondo|Oyster
+Ciara & Justin Timberlake|Love Sex Magic
+Coldplay|Adventure of a Lifetime
+Daft Punk|Around the World
+Disclosure|Jaded
+Doechii & SZA|Persuasive
+Drake|Hold On, We’re Going Home
+Dua Lipa|Houdini
+Dua Lipa|Go Easy
+Echosmith|Cool Kids
+Ella Langley|Be Her
+Foster the People|Pumped Up Kicks
+Frank Ocean|Lost
+Garbage|Only Happy When It Rains
+George Michael|Fastlove, Pt. 1
+Goldfrapp|Strict Machine
+Gorillaz|Dare
+Gwen Stefani|What You Waiting For?
+Gwen Stefani ft. Eve|Rich Girl
+Italove|Rhythm of Love
+Jennifer Paige|Crush
+Jennie|Power Trip
+JISOO|Earthquake
+Jennie|Mantra
+Jessie Murph & Jelly Roll|Wild Ones
+Justice|DVNO
+Justin Bieber ft. BloodPop|Friends
+Justin Bieber|Sweet Spot
+Katseye|Gabriela
+Kele|Tenderoni
+Kelly Rowland ft. Lil Wayne|Motivation
+Kenya Grace|Mr Cool
+Kevin Lyttle|Turn Me On
+Kylie Minogue|Spinning Around
+La Roux|Bulletproof
+Lana Del Rey|Crazy for You
+LISA|Sawadika
+Lorde|Green Light
+Madonna ft. Nicki Minaj & M.I.A.|Give Me All Your Luvin’
+Major Lazer|Lean On
+Mariah Carey|Someday
+Mandy Moore|Candy
+Moloko|Forever More
+Morgan Wallen|Last Thing You Need
+MGMT|Electric Feel
+Natasha Bedingfield|Show Me Love
+Ol’ Dirty Bastard, Kelis|Got Your Money
+Olivia Rodrigo|Good 4 U
+PinkPantheress|Illegal
+Phoenix|1901
+Prospa ft. Halsey|So Hot
+Rina Sawayama|TRDWFE
+Robyn|Blow My Mind
+Robyn|Show Me Love
+Rose Gray|All Again
+Sam Fender|People Watching
+Santigold|Disparate Youth
+Sia|Cheap Thrills
+Tate McRae|Sports Car
+Texas|Inner Smile
+The Ting Tings|That’s Not My Name
+Tove Lo & SG Lewis|Heat
+Tove Lo|Blood in Your Eyes
+TSHA ft. Rose Gray|Girls
+The Weeknd|Wanderlust
+U2|Lemon
+Usher, Pitbull|DJ Got Us Fallin’ In Love
+Xpansions|Move Your Body
+X-Press 2 ft. David Byrne|Lazy
+Zara Larsson & PinkPantheress|Midnight Sun
+Zara Larsson|Fast Emotion`.split("\n").map(l=>l.split("|"));
+const TABS=[["places","Places"],["people","People"],["culture","Culture"],["wildlife","Wildlife"],["missions","Missions"],["activities","Activities"],["radio","Radio"],["collectibles","Collectibles"]];
+const ALIAS={story:"missions",database:"collectibles"};
+const KEY="leonida-tracker-v1",IKEY="leonida-img-";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const str=(v,n)=>String(v==null?"":v).slice(0,n);
+const clean=o=>{const r={m:{},n:{},c:{},o:{},notes:{},tr:{},top:["","","","",""],golf:{s:Array(18).fill(""),best:0},f:{}};if(!o||typeof o!=="object")o={};
+ if(o.f&&typeof o.f==="object")for(const k in o.f)if(/^[a-z0-9-]{1,30}$/.test(k)&&o.f[k])r.f[k]=1;
+ for(let i=0;i<CH.length;i++){const a=o.m&&o.m["c"+i];r.m["c"+i]=Array.from({length:CH[i]},(_,j)=>!!(Array.isArray(a)&&a[j]))}
+ OPT.forEach((l,i)=>{const a=o.o&&o.o["c"+i];r.o["c"+i]=l.map((_,j)=>!!(Array.isArray(a)&&a[j]))});
+ if(o.n&&typeof o.n==="object")for(const k in o.n)if(/^c\d-\d+$/.test(k))r.n[k]=str(o.n[k],80);
+ if(o.c&&typeof o.c==="object")for(const k in o.c){const v=Math.max(0,Math.floor(+o.c[k]||0));if(v)r.c[k]=v}
+ if(o.notes&&typeof o.notes==="object")for(const k in o.notes)if(/^[a-z0-9-]{1,30}$/.test(k)&&o.notes[k])r.notes[k]=str(o.notes[k],4000);
+ if(o.tr&&typeof o.tr==="object")for(const k in o.tr)if(o.tr[k]&&+k>=0&&+k<TRACKS.length)r.tr[+k]=1;
+ if(Array.isArray(o.top))for(let i=0;i<5;i++)r.top[i]=str(o.top[i],80);
+ if(o.golf){if(Array.isArray(o.golf.s))for(let i=0;i<18;i++){const v=parseInt(o.golf.s[i]);r.golf.s[i]=v>0&&v<20?v:""}r.golf.best=Math.max(0,Math.floor(+o.golf.best||0))}
+ return r};
+let S;try{S=clean(JSON.parse(localStorage.getItem(KEY)))}catch(e){S=clean(null)}
+const IMG={};
+
+/* ---------- nav + tabs ---------- */
+$("nav").innerHTML=TABS.map(([k,l])=>`<a href="#${k}" data-t="${k}">${l}</a>`).join("");
+function show(){let h=location.hash.slice(1);h=ALIAS[h]||h;const t=TABS.some(x=>x[0]===h)?h:"missions";
+ TABS.forEach(([k])=>{$("t-"+k).hidden=k!==t});
+ document.querySelectorAll("nav a").forEach(a=>{if(a.dataset.t===t){a.setAttribute("aria-current","page");const n=$("nav");n.scrollLeft=a.offsetLeft-n.clientWidth/2+a.offsetWidth/2}else a.removeAttribute("aria-current")})}
+addEventListener("hashchange",()=>{show();scrollTo(0,0)});
+
+/* ---------- missions ---------- */
+const bar=(v,t,need)=>{const p=t?Math.min(100,v/t*100):0;const n=need&&t?`<span class="need" style="left:${need/t*100}%"></span>`:"";return `<div class="bar"><i style="width:${p}%"></i>${n}</div>`};
+const nameInput=(id,j)=>`<input class="nm" data-k="${id}" value="${esc(S.n[id]||"")}" placeholder="Add name (optional)" aria-label="Name of mission ${j+1}" maxlength="80">`;
+function renderChapters(){const open=[...document.querySelectorAll("details.ch")].map(d=>d.open);
+ $("chapters").innerHTML=CH.map((n,i)=>{const a=S.m["c"+i],d=a.filter(Boolean).length;
+  const ms=a.map((on,j)=>{const id=`c${i}-${j+1}`,kn=known(i,j);return `<div class="m${on?" on":""}"><input type="checkbox" id="${id}" data-c="${i}" data-j="${j}"${on?" checked":""}><label for="${id}"><span class="num">${j+1}</span>${kn?esc(kn):`Mission ${j+1}`}</label>${on&&!kn?nameInput(id,j):""}</div>`}).join("");
+  const all=d<n?`<div class="m"><button class="btn" type="button" data-all="${i}">Tick the whole chapter</button></div>`:"";
+  const op=OPT[i]?`<div class="m oh">Optional missions, not counted in the total</div>`+OPT[i].map((nm,j)=>{const id=`o${i}-${j+1}`,on=S.o["c"+i][j];return `<div class="m${on?" on":""}"><input type="checkbox" id="${id}" data-o="${i}" data-j="${j}"${on?" checked":""}><label for="${id}"><span class="num">·</span>${esc(nm)} <span class="opt">(optional)</span></label></div>`}).join(""):"";
+  return `<details class="ch${d===n?" done":""}" id="ch${i}"><summary><span class="chn">Chapter ${i+1}${TITLES[i]?`<small class="ct">${esc(TITLES[i])}</small>`:""}</span><span class="cnt">${d} / ${n}</span><span class="chev" aria-hidden="true">›</span>${bar(d,n,0)}</summary><div>${ms}${all}${op}</div></details>`}).join("");
+ open.forEach((o,i)=>{if(o&&$("ch"+i))$("ch"+i).open=true})}
+function refreshChapter(i){const el=$("ch"+i),a=S.m["c"+i],n=CH[i],d=a.filter(Boolean).length;
+ el.classList.toggle("done",d===n);el.querySelector(".cnt").textContent=`${d} / ${n}`;el.querySelector(".bar i").style.width=d/n*100+"%"}
+
+/* ---------- counters ---------- */
+const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB};
+const ALL=Object.values(LISTS).flat();
+function rowHTML([k,label,sub,total,need]){const v=S.c[k]||0,auto=k==="animals";
+ const right=need?(v>=need?`<span class="ok">100% target met</span>`:`${need-v} more for 100%`):(total&&v>=total?`<span class="ok">Complete</span>`:"");
+ return `<div class="row" data-row="${k}"><div><h5>${esc(label)}</h5>${sub?`<small>${esc(sub)}</small>`:""}</div>${auto?`<div class="autotot" aria-label="${v} studied">${v}</div>`:`<div class="step"><button type="button" data-k="${k}" data-d="-1" aria-label="One fewer ${esc(label)}">−</button><input type="number" inputmode="numeric" min="0" ${total?`max="${total}"`:""} data-k="${k}" value="${v}" aria-label="${esc(label)} found"><button type="button" data-k="${k}" data-d="1" aria-label="One more ${esc(label)}">+</button></div>`}${total?bar(v,total,need):""}<div class="meta"><span>${v}${total?` of ${total}`:" found"}</span><span>${right}</span></div></div>`}
+function renderCounters(){if(animalSum())syncAnimals();for(const id in LISTS)$(id).innerHTML=LISTS[id].map(rowHTML).join("")}
+function refreshRow(k){const def=ALL.find(r=>r[0]===k),el=document.querySelector(`[data-row="${k}"]`);if(!def||!el)return;const t=document.createElement("div");t.innerHTML=rowHTML(def);el.replaceWith(t.firstElementChild);
+ if(WG.some(g=>g[0]===k)){syncAnimals();refreshRow("animals")}}
+
+const DEF={map:["images/map.jpg","50% 45%","Map of Leonida"],mud:["images/mud.jpg","50% 30%","Mud-covered regulars at the Thrillbilly Mud Club"],"g-fcmc":["images/g-fcmc.jpg","50% 60%","Final Chapter MC riding through town"],"g-m7":["images/g-m7.jpg","50% 30%","M7 members"],keys:["images/keys.jpg","50% 50%","Leonida Keys postcard"],linda:["images/linda.jpg","40% 0","Linda outside the Starlet Motel"],golf:["images/golf.jpg","50% 35%","King Gator Adventure Golf"],flash:["images/flash.jpg","50% 50%","Flash FM logo"]};
+["Vice City","Grassrivers","Port Gellhorn","Ambrosia","Mount Kalaga National Park"].forEach((n,i)=>DEF["place"+i]=[`images/place${i}.jpg`,"50% 50%",`${n} postcard`]);
+[["jason","Jason Duval"],["lucia","Lucia Caminos"],["cal","Cal Hampton"],["boobie","Boobie Ike"],["drequan","Dre'Quan Priest"],["dimez","Real Dimez"],["raul","Raul Bautista"],["brian","Brian Heder"]].forEach(([k,n])=>DEF["p-"+k]=[`images/p-${k}.jpg`,"50% 0",`${n} artwork`]);
+/* ---------- placeholders ---------- */
+const stub=(key,name,line,badge,tall)=>{const shot=`<div class="shot${tall?" tall":""}" data-img="${key}"></div>`,has=!!DEF[key];
+ return `<article class="entry sm${has?" pic":""}"><div class="stub"><h3>${esc(name)}</h3><span class="badge">${badge}</span></div>${line?`<p style="margin:4px 0">${line}</p>`:""}${has?shot:""}<details class="more"><summary>${has?"Add notes":"Add a photo and notes"}</summary>${has?"":shot}<div class="notes" data-note="${key}"></div></details></article>`};
+const MAIN=[["jason","Jason Duval","Protagonist"],["lucia","Lucia Caminos","Protagonist"],["cal","Cal Hampton",""],["boobie","Boobie Ike",""],["drequan","Dre'Quan Priest",""],["dimez","Real Dimez",""],["raul","Raul Bautista",""],["brian","Brian Heder",""]];
+$("peopleMain").innerHTML=MAIN.map(([k,n,r])=>stub("p-"+k,n,r?`<span class="pl">${r}</span>`:"","NOT WRITTEN UP YET",true)).join("");
+$("gangs").innerHTML=stub("g-fcmc","Final Chapter MC",`<span class="pl">Outlaw biker club</span>. Leonida's biker gang, rooted in Ambrosia, where the sugar refinery is the main employer and the club, by Rockstar's account, supplies most of everything else. Colours: black.`,"NOT WRITTEN UP YET")
+ +stub("g-m7","M7 (Marabunta Grande)",`<span class="pl">Street gang</span>. A Salvadoran-rooted gang carried over from GTA V, and spotted all over the state.`,"NOT WRITTEN UP YET");
+const pl=t=>`<span class="pl">${t}</span>`,NW="NOT WRITTEN UP YET";
+$("minorKeys").innerHTML=[
+ ["donnie","Donnie","A pilot who flies runs for Brian."],
+ ["shirley","Shirley",`Jason's neighbour in Key Lento. Features in the optional mission ${pl("Get Shirley's Rum")}.`],
+ ["joey","Joey",`Mechanic at Coastal Auto Care, met in ${pl("Just a Scratch")}.`],
+ ["arnold","Arnold",`Brian's long-time broker: the Arnold of ${pl("Hey Arnold!")}.`],
+ ["andy","Andy","A contact Lucia can call, and the giver of a run of Strangers and Freaks missions."],
+ ["lori","Lori Heder","Brian's third wife, who works at the boat yard."],
+ ["mandy","Mandy","Brian's tenant in the Keys."]
+].map(([k,n,l])=>stub("p-"+k,n,l,NW)).join("");
+$("minorPG").innerHTML=[
+ ["wyman","Wyman",`A mechanic with a salvage business, met at the motel in ${pl("Coffee Break")}. The man behind the Wyman's cars collectible.`],
+ ["billy","Billy",`Runs the dirt races at the <a href="#culture">Thrillbilly Mud Club</a>.`],
+ ["moses","Moses",`Port Gellhorn mechanic with a garage of his own, met in ${pl("Moses")}.`],
+ ["vicki","Vicki","A Starlet Motel resident, and the one who points Lucia towards Moses."],
+ ["dunk","Dunk",`Small-time dealer living in a Port Gellhorn trailer, who calls Lucia in ${pl("Painkiller Supplier")}.`]
+].map(([k,n,l])=>stub("p-"+k,n,l,NW)).join("");
+
+/* ---------- notes + photos ---------- */
+function renderNotes(){document.querySelectorAll("[data-note]").forEach(el=>{const k=el.dataset.note;
+ el.innerHTML=`<div class="neon">Field notes</div><textarea data-nk="${k}" aria-label="Your notes" placeholder="What you spotted, where, and what happened">${esc(S.notes[k]||"")}</textarea>`})}
+function renderShot(el){const k=el.dataset.img,own=IMG[k],d=DEF[k],src=own||(d&&d[0]);el.classList.toggle("has",!!src);
+ const pos=!own&&d?` style="object-position:${d[1]}"`:"",alt=own?"Your screenshot":(d?d[2]:"");
+ el.innerHTML=(src?`<img src="${src}" alt="${esc(alt)}" loading="lazy"${pos}>`:`<span class="sun"></span><span class="stripes"></span>`)+`<label>${src?"Replace":"＋ Add your screenshot"}<input type="file" accept="image/*" data-up="${k}"></label>`+(own?`<button class="rm" type="button" data-rm="${k}">${d?"Restore original":"Remove"}</button>`:"")}
+function renderShots(){document.querySelectorAll("[data-img]").forEach(renderShot)}
+async function shrink(file){const url=URL.createObjectURL(file);const img=new Image();await new Promise((ok,no)=>{img.onload=ok;img.onerror=no;img.src=url});
+ let w=Math.min(1200,img.naturalWidth),q=.78,out="";
+ for(let n=0;n<6;n++){const h=Math.round(img.naturalHeight*w/img.naturalWidth),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);out=c.toDataURL("image/jpeg",q);if(out.length<230000)break;w=Math.round(w*.8);q=Math.max(.55,q-.06)}
+ URL.revokeObjectURL(url);return out}
+
+/* ---------- golf ---------- */
+function renderGolf(){const s=S.golf.s;const tot=(a,b)=>s.slice(a,b).reduce((x,v)=>x+(+v||0),0);
+ const row=(a,b,l)=>`<tr><th>${l}</th>${Array.from({length:9},(_,i)=>`<th>${a+i+1}</th>`).join("")}<th>${b===9?"OUT":"IN"}</th></tr><tr><td>Score</td>${Array.from({length:9},(_,i)=>`<td><input type="number" inputmode="numeric" min="1" max="19" data-g="${a+i}" value="${s[a+i]}" aria-label="Hole ${a+i+1} strokes"></td>`).join("")}<td><b id="gt${a}">${tot(a,b)||""}</b></td></tr>`;
+ $("golfCard").innerHTML=`<table>${row(0,9,"Hole")}${row(9,18,"Hole")}<tr><td><b>Total</b></td><td colspan="10" style="text-align:left;padding-left:8px"><b id="gtot">${tot(0,18)||"–"}</b></td></tr></table>`;
+ $("golfBest").textContent=S.golf.best?`${S.golf.best} strokes`:"Not played yet"}
+function golfTotals(){const s=S.golf.s,t=(a,b)=>s.slice(a,b).reduce((x,v)=>x+(+v||0),0);$("gt0").textContent=t(0,9)||"";$("gt9").textContent=t(9,18)||"";$("gtot").textContent=t(0,18)||"–"}
+
+/* ---------- radio ---------- */
+$("top5").innerHTML=[0,1,2,3,4].map(i=>`<label>${i+1}<input data-top="${i}" value="${esc(S.top[i])}" placeholder="Song" aria-label="Top five, number ${i+1}"></label>`).join("");
+function renderTracks(){const q=$("trq").value.trim().toLowerCase(),hide=$("trHide").checked;
+ $("tracks").innerHTML=TRACKS.map(([a,t],i)=>{const on=!!S.tr[i];if(hide&&on)return "";if(q&&!(a+" "+t).toLowerCase().includes(q))return "";
+  return `<div class="tr"><input type="checkbox" id="tr${i}" data-tr="${i}"${on?" checked":""}><label for="tr${i}"><b>${esc(a)}</b> <span>${esc(t)}</span></label></div>`}).join("")||`<p class="note">No tracks match.</p>`;
+ $("trCount").textContent=`${Object.keys(S.tr).length} of ${TRACKS.length} heard`}
+$("trq").addEventListener("input",renderTracks);$("trHide").addEventListener("change",renderTracks);
+
+/* ---------- stats + saving ---------- */
+function stats(){const done=Object.values(S.m).reduce((s,a)=>s+a.filter(Boolean).length,0);
+ $("sStory").textContent=`${done}/91`;const met=GOALS.filter(g=>(S.c[g[0]]||0)>=g[4]).length+(done===91?1:0);
+ $("sGoals").textContent=`${met}/${GOALS.length+1}`;
+ $("code").value=btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
+let db=null,uid=null,ref=null,timer=null,writing=false,again=false;
+const SYNC_OK="Saved to your account, so it follows you between devices";
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}stats();if(!ref)return;clearTimeout(timer);timer=setTimeout(push,900)}
+async function push(){if(writing){again=true;return}writing=true;
+ try{await ref.set({state:JSON.stringify(S),at:Date.now()});$("sync").textContent=SYNC_OK}catch(e){$("sync").textContent="Couldn't reach your account, so progress is saved on this device for now"}
+ writing=false;if(again){again=false;push()}}
+async function saveImg(k,data){if(data)IMG[k]=data;else delete IMG[k];
+ try{data?localStorage.setItem(IKEY+k,data):localStorage.removeItem(IKEY+k)}catch(e){}
+ if(db&&uid){try{const r=db.doc(`data/users/${uid}/img-${k}`);data?await r.set({d:data,at:Date.now()}):await r.delete()}catch(e){$("sync").textContent="That photo is saved on this device only"}}}
+for(const el of document.querySelectorAll("[data-img]")){try{const v=localStorage.getItem(IKEY+el.dataset.img);if(v)IMG[el.dataset.img]=v}catch(e){}}
+
+/* ---------- events ---------- */
+document.addEventListener("change",async e=>{const t=e.target;
+ if(t.dataset.up){const f=t.files&&t.files[0];if(!f)return;const k=t.dataset.up,el=t.closest("[data-img]");const lab=el.querySelector("label");if(lab)lab.firstChild.textContent="Saving…";
+  try{const d=await shrink(f);await saveImg(k,d)}catch(err){alertMsg("That image couldn't be read. Try a JPG or PNG.")}document.querySelectorAll(`[data-img="${k}"]`).forEach(renderShot);return}
+ if(t.dataset.flag){if(t.checked)S.f[t.dataset.flag]=1;else delete S.f[t.dataset.flag];save();return}
+ if(t.dataset.o!==undefined){S.o["c"+t.dataset.o][+t.dataset.j]=t.checked;t.closest(".m").classList.toggle("on",t.checked);save();return}
+ if(t.dataset.tr!==undefined){if(t.checked)S.tr[+t.dataset.tr]=1;else delete S.tr[+t.dataset.tr];save();if($("trHide").checked)renderTracks();else $("trCount").textContent=`${Object.keys(S.tr).length} of ${TRACKS.length} heard`;return}
+ if(t.matches("[data-c]")){const i=+t.dataset.c,j=+t.dataset.j;S.m["c"+i][j]=t.checked;const row=t.closest(".m");row.classList.toggle("on",t.checked);
+  let nm=row.querySelector(".nm");if(t.checked&&!nm&&!known(i,j))row.insertAdjacentHTML("beforeend",nameInput(t.id,j));else if(!t.checked&&nm)nm.remove();refreshChapter(i);save();return}
+ if(t.matches(".step input")){const k=t.dataset.k,def=ALL.find(r=>r[0]===k);let v=Math.max(0,Math.floor(+t.value||0));if(def[3])v=Math.min(def[3],v);if(v)S.c[k]=v;else delete S.c[k];refreshRow(k);save()}});
+document.addEventListener("input",e=>{const t=e.target;
+ if(t.matches(".nm")){const v=t.value.trim();if(v)S.n[t.dataset.k]=v.slice(0,80);else delete S.n[t.dataset.k];save()}
+ else if(t.dataset.nk){const v=t.value;if(v.trim())S.notes[t.dataset.nk]=v.slice(0,4000);else delete S.notes[t.dataset.nk];save()}
+ else if(t.dataset.top!==undefined){S.top[+t.dataset.top]=t.value.slice(0,80);save()}
+ else if(t.dataset.g!==undefined){const v=parseInt(t.value);S.golf.s[+t.dataset.g]=v>0&&v<20?v:"";golfTotals();save()}});
+let msgT;function alertMsg(m){const s=$("sync");s.textContent=m;clearTimeout(msgT);msgT=setTimeout(()=>s.textContent=ref?SYNC_OK:"Saved on this device",4000)}
+document.addEventListener("click",async e=>{const ab=e.target.closest("[data-all]");
+ if(ab){const i=+ab.dataset.all;S.m["c"+i]=S.m["c"+i].map(()=>true);renderChapters();$("ch"+i).open=true;save();return}
+ const rm=e.target.closest("[data-rm]");if(rm){const k=rm.dataset.rm;await saveImg(k,null);document.querySelectorAll(`[data-img="${k}"]`).forEach(renderShot);return}
+ const b=e.target.closest(".step button");if(!b)return;
+ const k=b.dataset.k,def=ALL.find(r=>r[0]===k);let v=(S.c[k]||0)+(+b.dataset.d);v=Math.max(0,def[3]?Math.min(def[3],v):v);
+ if(v)S.c[k]=v;else delete S.c[k];refreshRow(k);save();const nb=document.querySelector(`.step button[data-k="${k}"][data-d="${b.dataset.d}"]`);if(nb)nb.focus()});
+$("golfSave").addEventListener("click",()=>{const s=S.golf.s;if(s.some(v=>v==="")){alertMsg("Fill in all 18 holes first");return}
+ const t=s.reduce((x,v)=>x+v,0);if(!S.golf.best||t<S.golf.best){S.golf.best=t;alertMsg(`New best: ${t} strokes`)}else alertMsg(`${t} strokes. Your best is still ${S.golf.best}`);renderGolf();save()});
+$("golfClear").addEventListener("click",()=>{S.golf.s=Array(18).fill("");renderGolf();save()});
+$("copy").addEventListener("click",async()=>{const b=$("copy");try{await navigator.clipboard.writeText($("code").value);b.textContent="Copied"}catch(e){$("code").select();b.textContent="Select and copy the code above"}setTimeout(()=>b.textContent="Copy code",2500)});
+$("restore").addEventListener("click",()=>{const b=$("restore");try{S=clean(JSON.parse(decodeURIComponent(escape(atob($("code").value.trim())))));renderAll();save();b.textContent="Restored"}catch(e){b.textContent="That code didn't work"}setTimeout(()=>b.textContent="Restore from code",2500)});
+let armed=false;$("reset").addEventListener("click",()=>{const b=$("reset");if(!armed){armed=true;b.textContent="Tap again to wipe all progress";setTimeout(()=>{armed=false;b.textContent="Reset everything"},4000);return}
+ armed=false;b.textContent="Reset everything";S=clean(null);renderAll();save()});
+
+function renderAll(){document.querySelectorAll("[data-flag]").forEach(el=>el.checked=!!S.f[el.dataset.flag]);renderChapters();renderCounters();renderNotes();renderGolf();renderTracks();
+ document.querySelectorAll("[data-top]").forEach(el=>el.value=S.top[+el.dataset.top]);stats()}
+renderAll();renderShots();show();
+
+(async()=>{try{if(!window.claude||!claude.use)return;
+ const [d,u]=await Promise.all([claude.use("db"),claude.use("user")]);if(!d||!u)return;
+ const id=await u.id();if(!id)return;db=d;uid=id;ref=db.doc("data/users/"+id+"/progress");
+ const snap=await db.collection("data/users/"+id).get();let prog=null;
+ for(const doc of snap.docs){const body=doc.data()||{};
+  if(doc.id==="progress")prog=body;
+  else if(doc.id.startsWith("img-")&&typeof body.d==="string"&&body.d.startsWith("data:image/")){IMG[doc.id.slice(4)]=body.d}}
+ renderShots();
+ if(prog){try{S=clean(JSON.parse(prog.state));try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}renderAll()}catch(e){}$("sync").textContent=SYNC_OK}
+ else{const any=Object.values(S.m).some(a=>a.some(Boolean))||Object.keys(S.c).length;if(any)push();else $("sync").textContent="Progress will save to your account"}
+}catch(e){}})();
+}
+</script>
+</body>
+</html>
