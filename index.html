@@ -74,6 +74,12 @@ h3{font:400 20px/1.15 Anton,Impact,sans-serif;margin:16px 0 4px}
 .notes textarea{width:100%;min-height:96px;font:16px/1.6 Lato,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
  background:var(--card) repeating-linear-gradient(transparent 0 calc(1.6em - 1px),color-mix(in srgb,var(--cyan) 30%,transparent) calc(1.6em - 1px) 1.6em);background-attachment:local;background-position:0 8px;resize:vertical}
 .entry.sm{margin:10px 0;padding:8px 16px 4px}
+.vform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 6px}
+.vform label{display:flex;flex-direction:column;gap:4px;font:700 13px Lato,sans-serif;color:var(--mute)}
+.vform .wide,.vform .btn{grid-column:1/-1}
+.vform input,.vform select{height:44px;font:16px Lato,sans-serif;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--bg);color:var(--ink)}
+@media(max-width:600px){.vform{grid-template-columns:1fr}}
+.rmv{background:none;border:0;color:var(--mag);font:700 13px Lato,sans-serif;cursor:pointer;min-height:44px;padding:0}
 .grp{font:900 12px/1.2 Lato,sans-serif;letter-spacing:.1em;color:var(--cyan);margin:18px 0 6px;text-transform:uppercase}
 #peopleMain{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 14px}
 #peopleMain .shot.tall{margin-top:8px}
@@ -117,15 +123,9 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 .meta{grid-column:1/-1;display:flex;justify-content:space-between;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
 .meta .ok{color:var(--mag);font-weight:900}
 /* golf + radio */
-.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;background:var(--night);color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0;font-size:14px}
+.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;background:var(--night);color:#fff;border-radius:12px;padding:12px 14px;margin:10px 0;font-size:14px}
 .strip b{display:block;color:#5fe3f2;font:900 11px Lato,sans-serif;letter-spacing:.08em}
-@media(max-width:600px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.card{overflow-x:auto;margin:8px 0}
-.card table{border-collapse:collapse;width:100%;min-width:480px;font-variant-numeric:tabular-nums}
-.card th{background:var(--mag);color:#fff;font:900 12px Lato,sans-serif;padding:6px 4px}
-.card td{border-bottom:1px solid var(--line);text-align:center;padding:2px}
-.card td:first-child,.card th:first-child{text-align:left;padding-left:8px;white-space:nowrap}
-.card input{width:100%;max-width:40px;height:40px;text-align:center;font:700 16px Lato,sans-serif;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);-moz-appearance:textfield}
+@media(max-width:600px){.strip{grid-template-columns:1fr}}
 .tracks{columns:2 260px;column-gap:18px;margin:8px 0}
 .tr{display:flex;gap:10px;align-items:center;break-inside:avoid;padding:5px 0;border-bottom:1px solid var(--line);min-height:44px}
 .tr label{cursor:pointer;font-size:15px;line-height:1.3}
@@ -322,6 +322,26 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <div id="gangs"></div>
 </section>
 
+<section id="t-goingout" hidden>
+<p class="kicker">CULTURE • EAT, DRINK, DANCE</p>
+<h2>Going out</h2><div class="tag neon">last orders</div>
+<p class="lede">Leonida has more than 400 places to eat and drink: around 120 bars, more than 100 street-food carts and a couple of dozen fast-food joints, plus the clubs where Vice City actually earns its reputation.</p>
+<p class="note">They appear on the map as you clear the fog. Use the map's Food &amp; Drink filter to find them. Add your own finds at the bottom of the page.</p>
+<h3>Clubs</h3><div id="vClubs"></div>
+<h3>Bars</h3><div id="vBars"></div>
+<h3>Eateries</h3><div id="vEats"></div>
+<article class="entry" id="addVenue">
+<p class="kicker">YOUR FINDS</p><h3 style="margin-top:2px">Add a place</h3>
+<form id="vForm" class="vform">
+<label>Name<input id="vName" maxlength="60" required placeholder="e.g. The Cheeky Mutineer"></label>
+<label>Type<select id="vType"><option value="club">Club</option><option value="bar">Bar</option><option value="eat">Eatery</option></select></label>
+<label>Where<input id="vArea" maxlength="60" placeholder="e.g. Key Lento"></label>
+<label class="wide">One-line description<input id="vDesc" maxlength="140" placeholder="What's it like? (optional)"></label>
+<button class="btn" type="submit">Add to the guide</button>
+</form>
+</article>
+</section>
+
 <section id="t-wildlife" hidden>
 <p class="kicker">WILDLIFE • FIELD RECORD</p>
 <h2>Wildlife</h2>
@@ -349,14 +369,11 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <article class="entry" id="e-golf">
 <p class="kicker">MINI GOLF</p><h2>King Gator Golf</h2><div class="tag neon">putt with the reptiles</div>
 <div class="shot" data-img="golf"></div><p class="cap">The big gator presides over the greens.</p>
-<div class="strip"><div><b>WHERE</b>Buckskin Swamp, Vice-Dale County</div><div><b>HOLES</b>18</div><div><b>FOR 100%</b>Finish 2 of the 3 mini golf courses</div><div><b>MY BEST</b><span id="golfBest">Not played yet</span></div></div>
+<div class="strip"><div><b>WHERE</b>Buckskin Swamp, Vice-Dale County</div><div><b>HOLES</b>18</div><div><b>FOR 100%</b>Finish 2 of the 3 mini golf courses</div></div>
 <p>If Leonida had a state sport, it might well be adventure golf. King Gator is roadside Florida at its most gloriously over the top: themed putting holes with ramps, obstacles and moving parts, all overseen by a reptile with no interest in your handicap. Fewest strokes wins, and the course is open any time, so there's no rush.</p>
 <p><b>Our tip:</b> treat each hole as a puzzle first and a putt second. Watch the moving parts go round once before you swing, and save the power shots for the ramps.</p>
 <div class="box dm"><h4>Also in Leonida</h4><b>Frontier Adventure Golf</b>, Waning Sands, Leonard County.<br><b>Dino Golf Challenge</b>, Frogswater, Kelly County.<br>Your rounds and best scores are under <i>Progress › Activities › Sports</i>.</div>
-<h3>Scorecard</h3>
-<p class="note">Fill in a round as you play. Your best total is kept above.</p>
-<div class="card" id="golfCard"></div>
-<div class="btns"><button class="btn" id="golfSave" type="button">Save round as best if lower</button><button class="btn" id="golfClear" type="button">Clear card</button></div>
+
 <div class="notes" data-note="golf"></div>
 </article>
 <article class="entry" id="e-dive">
@@ -392,6 +409,10 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <h2>Collectibles</h2>
 <p class="note">The line on each bar marks how many you need for 100% completion. Selling cards doesn't remove them from your collection.</p>
 <div id="col100"></div>
+<h3>Stunts</h3>
+<p class="note">For 100% you need any 300 of the 397 stunts, mixed however you like across the four types.</p>
+<div id="stuntTotal"></div>
+<div id="stuntGroups"></div>
 <h3>Progress database</h3>
 <div id="dbase"></div>
 <h3>Just for fun</h3>
@@ -424,10 +445,13 @@ const C100=[["cards","Collectible cards","480 cards in 18 sets, counted by set",
 const CX=[["art","Ahol street art","",112,0],["mural","1010 murals","",5,0],["swap","Book swaps","",7,0],["wyman","Wyman's cars","Ultimate Edition only",5,0],["doub","Doubloons","Up to 99 can be sold",99,0],["meteor","Meteorites","No fixed total",0,0]];
 const WT=[["animals","Animals studied","Adds up automatically from the groups below",255,100]];
 const WG=[["hunt","Hunts","",61,0],["fish","Fish","",35,0],["mam","Mammals","",18,0],["pets","Cats and dogs","",34,0],["rep","Reptiles","",6,0],["bird","Birds","",60,0],["other","Other","Anything the groups above don't cover",41,0]];
-const animalSum=()=>WG.reduce((t,g)=>t+(S.c[g[0]]||0),0);
-function syncAnimals(){const v=animalSum();if(v)S.c.animals=v;else delete S.c.animals}
+const STT=[["stunts","Stunts completed","Adds up automatically from the four types below",397,300]];
+const SG=[["sjump","Stunt jumps","",130,0],["bridge","Under the bridges","",202,0],["knife","Knife flights","",40,0],["base","Base jumps","",25,0]];
+const AUTO={animals:WG,stunts:SG};
+const groupSum=k=>AUTO[k].reduce((t,g)=>t+(S.c[g[0]]||0),0);
+function syncTotal(k){const v=groupSum(k);if(v)S.c[k]=v;else delete S.c[k]}
 const DB=[["veh","Vehicles (base models)","Scanned or owned",277,200],["wep","Standard weapons","",66,50],["wvar","Unique weapon variants","Not needed for 100%",130,0],["stand","Standout vehicles","Not needed for 100%",281,0]];
-const GOALS=[...C100,...WT,["veh",0,0,277,200],["wep",0,0,66,50]];
+const GOALS=[...C100,...WT,["stunts",0,0,397,300],["veh",0,0,277,200],["wep",0,0,66,50]];
 const STUBS=[["Vice City","Leonida's neon capital: beaches, nightlife and money in a hurry.","Miami"],["Grassrivers","Wetlands, airboats and things with teeth.","The Everglades"],["Port Gellhorn","A faded Gulf-coast town that's seen better days.","Florida's Panhandle coast"],["Ambrosia","Inland sugar-refinery country.","Central Florida's sugar towns"],["Mount Kalaga","Leonida's wild national park, for hikers and hunters.","Florida's wild interior"]];
 const TRACKS=`Addison Rae|Fame Is a Gun
 Aluna, Jayda G|Mine O’ Mine
@@ -514,13 +538,14 @@ Xpansions|Move Your Body
 X-Press 2 ft. David Byrne|Lazy
 Zara Larsson & PinkPantheress|Midnight Sun
 Zara Larsson|Fast Emotion`.split("\n").map(l=>l.split("|"));
-const TABS=[["places","Places"],["people","People"],["culture","Culture"],["wildlife","Wildlife"],["missions","Missions"],["activities","Activities"],["radio","Radio"],["collectibles","Collectibles"]];
+const TABS=[["places","Places"],["people","People"],["culture","Culture"],["goingout","Going out"],["wildlife","Wildlife"],["missions","Missions"],["activities","Activities"],["radio","Radio"],["collectibles","Collectibles"]];
 const ALIAS={story:"missions",database:"collectibles"};
 const KEY="leonida-tracker-v1",IKEY="leonida-img-";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const str=(v,n)=>String(v==null?"":v).slice(0,n);
-const clean=o=>{const r={m:{},n:{},c:{},o:{},notes:{},tr:{},top:["","","","",""],golf:{s:Array(18).fill(""),best:0},f:{}};if(!o||typeof o!=="object")o={};
+const clean=o=>{const r={m:{},n:{},c:{},o:{},notes:{},tr:{},top:["","","","",""],golf:{s:Array(18).fill(""),best:0},f:{},v:[]};if(!o||typeof o!=="object")o={};
+ if(Array.isArray(o.v))r.v=o.v.filter(x=>x&&typeof x==="object"&&/^[a-z0-9]{4,12}$/.test(x.id)&&x.n).slice(0,200).map(x=>({id:x.id,n:str(x.n,60),t:["club","bar","eat"].includes(x.t)?x.t:"bar",a:str(x.a,60),d:str(x.d,140)}));
  if(o.f&&typeof o.f==="object")for(const k in o.f)if(/^[a-z0-9-]{1,30}$/.test(k)&&o.f[k])r.f[k]=1;
  for(let i=0;i<CH.length;i++){const a=o.m&&o.m["c"+i];r.m["c"+i]=Array.from({length:CH[i]},(_,j)=>!!(Array.isArray(a)&&a[j]))}
  OPT.forEach((l,i)=>{const a=o.o&&o.o["c"+i];r.o["c"+i]=l.map((_,j)=>!!(Array.isArray(a)&&a[j]))});
@@ -555,14 +580,14 @@ function refreshChapter(i){const el=$("ch"+i),a=S.m["c"+i],n=CH[i],d=a.filter(Bo
  el.classList.toggle("done",d===n);el.querySelector(".cnt").textContent=`${d} / ${n}`;el.querySelector(".bar i").style.width=d/n*100+"%"}
 
 /* ---------- counters ---------- */
-const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB};
+const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB,stuntTotal:STT,stuntGroups:SG};
 const ALL=Object.values(LISTS).flat();
-function rowHTML([k,label,sub,total,need]){const v=S.c[k]||0,auto=k==="animals";
+function rowHTML([k,label,sub,total,need]){const v=S.c[k]||0,auto=k in AUTO;
  const right=need?(v>=need?`<span class="ok">100% target met</span>`:`${need-v} more for 100%`):(total&&v>=total?`<span class="ok">Complete</span>`:"");
  return `<div class="row" data-row="${k}"><div><h5>${esc(label)}</h5>${sub?`<small>${esc(sub)}</small>`:""}</div>${auto?`<div class="autotot" aria-label="${v} studied">${v}</div>`:`<div class="step"><button type="button" data-k="${k}" data-d="-1" aria-label="One fewer ${esc(label)}">−</button><input type="number" inputmode="numeric" min="0" ${total?`max="${total}"`:""} data-k="${k}" value="${v}" aria-label="${esc(label)} found"><button type="button" data-k="${k}" data-d="1" aria-label="One more ${esc(label)}">+</button></div>`}${total?bar(v,total,need):""}<div class="meta"><span>${v}${total?` of ${total}`:" found"}</span><span>${right}</span></div></div>`}
-function renderCounters(){if(animalSum())syncAnimals();for(const id in LISTS)$(id).innerHTML=LISTS[id].map(rowHTML).join("")}
+function renderCounters(){for(const t in AUTO)if(groupSum(t))syncTotal(t);for(const id in LISTS)$(id).innerHTML=LISTS[id].map(rowHTML).join("")}
 function refreshRow(k){const def=ALL.find(r=>r[0]===k),el=document.querySelector(`[data-row="${k}"]`);if(!def||!el)return;const t=document.createElement("div");t.innerHTML=rowHTML(def);el.replaceWith(t.firstElementChild);
- if(WG.some(g=>g[0]===k)){syncAnimals();refreshRow("animals")}}
+ for(const t in AUTO)if(AUTO[t].some(g=>g[0]===k)){syncTotal(t);refreshRow(t)}}
 
 const DEF={map:["images/map.jpg","50% 45%","Map of Leonida"],mud:["images/mud.jpg","50% 30%","Mud-covered regulars at the Thrillbilly Mud Club"],"g-fcmc":["images/g-fcmc.jpg","50% 60%","Final Chapter MC riding through town"],"g-m7":["images/g-m7.jpg","50% 30%","M7 members"],keys:["images/keys.jpg","50% 50%","Leonida Keys postcard"],linda:["images/linda.jpg","40% 0","Linda outside the Starlet Motel"],golf:["images/golf.jpg","50% 35%","King Gator Adventure Golf"],flash:["images/flash.jpg","50% 50%","Flash FM logo"]};
 ["Vice City","Grassrivers","Port Gellhorn","Ambrosia","Mount Kalaga National Park"].forEach((n,i)=>DEF["place"+i]=[`images/place${i}.jpg`,"50% 50%",`${n} postcard`]);
@@ -592,6 +617,16 @@ $("minorPG").innerHTML=[
  ["dunk","Dunk",`Small-time dealer living in a Port Gellhorn trailer, who calls Lucia in ${pl("Painkiller Supplier")}.`]
 ].map(([k,n,l])=>stub("p-"+k,n,l,NW)).join("");
 
+
+/* ---------- going out ---------- */
+const VEN={club:[["nine1nine","NINE1NINE","Nightclub in Downtown Vice City."],["vault","The Vault","A more traditional nightclub, just north of Downtown Vice City."],["jack","Jack of Hearts","Strip club and nightclub hybrid in Crosstown, Vice City."],["delights","Delights Cabaret","Port Gellhorn's strip club, a short walk from the Starlet Motel."]],
+bar:[["rusty","The Rusty Anchor","Key Lento's dive bar: bait, beer and boat gossip."],["effluvia","Effluvia","Rooftop bar and lounge on Vice Beach."],["hoodwinks","Hoodwinks Liquor Bar","Neighbourhood bar in Crosstown, Vice City."],["thirsty","The Thirsty Wolf","Bar in Vice-Dale County."],["chickys","Chicky's Tiki Bar","Tiki bar down in the Keys."],["mutineer","The Cheeky Mutineer","Keys bar for the sunburnt and the thirsty."],["manatee","Manatee's Rest","Waterside bar in the Keys."],["hoghouse","The Hog House Bar","Kelly County bar. Expect bikes outside."]],
+eat:[["hanks","Hank's Waffles","Waffle-house diner on the Gulf coast, around Port Gellhorn."],["burgershot","Burger Shot","The series classic is back, but there's only one, in Ocean Beach."],["pollo","Pollo Diablo","Leonida's biggest fast-food chain, with five branches."],["tacobomb","Taco Bomb","Roadside taco chain out in the sticks."],["valentins","Valentin's Cuban Cuisine","Cuban kitchen in Vice City."],["reggies","Reggie's Family Soul Food","Soul food spot in Vice City."],["blend","Blend Coffee House","Vice City coffee stop."]]};
+const VBOX={club:"vClubs",bar:"vBars",eat:"vEats"};
+function renderVenues(){for(const t in VBOX){
+ const seeded=VEN[t].map(([k,n,l])=>stub("v-"+k,n,esc(l),"NOT WRITTEN UP YET"));
+ const mine=S.v.filter(x=>x.t===t).map(x=>stub("u-"+x.id,x.n,`${x.a?`<span class="pl">${esc(x.a)}</span>. `:""}${esc(x.d)} <button class="rmv" type="button" data-rmv="${x.id}">Remove</button>`,"YOUR FIND"));
+ $(VBOX[t]).innerHTML=seeded.join("")+mine.join("")}}
 /* ---------- notes + photos ---------- */
 function renderNotes(){document.querySelectorAll("[data-note]").forEach(el=>{const k=el.dataset.note;
  el.innerHTML=`<div class="neon">Field notes</div><textarea data-nk="${k}" aria-label="Your notes" placeholder="What you spotted, where, and what happened">${esc(S.notes[k]||"")}</textarea>`})}
@@ -603,13 +638,6 @@ async function shrink(file){const url=URL.createObjectURL(file);const img=new Im
  let w=Math.min(1200,img.naturalWidth),q=.78,out="";
  for(let n=0;n<6;n++){const h=Math.round(img.naturalHeight*w/img.naturalWidth),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);out=c.toDataURL("image/jpeg",q);if(out.length<230000)break;w=Math.round(w*.8);q=Math.max(.55,q-.06)}
  URL.revokeObjectURL(url);return out}
-
-/* ---------- golf ---------- */
-function renderGolf(){const s=S.golf.s;const tot=(a,b)=>s.slice(a,b).reduce((x,v)=>x+(+v||0),0);
- const row=(a,b,l)=>`<tr><th>${l}</th>${Array.from({length:9},(_,i)=>`<th>${a+i+1}</th>`).join("")}<th>${b===9?"OUT":"IN"}</th></tr><tr><td>Score</td>${Array.from({length:9},(_,i)=>`<td><input type="number" inputmode="numeric" min="1" max="19" data-g="${a+i}" value="${s[a+i]}" aria-label="Hole ${a+i+1} strokes"></td>`).join("")}<td><b id="gt${a}">${tot(a,b)||""}</b></td></tr>`;
- $("golfCard").innerHTML=`<table>${row(0,9,"Hole")}${row(9,18,"Hole")}<tr><td><b>Total</b></td><td colspan="10" style="text-align:left;padding-left:8px"><b id="gtot">${tot(0,18)||"–"}</b></td></tr></table>`;
- $("golfBest").textContent=S.golf.best?`${S.golf.best} strokes`:"Not played yet"}
-function golfTotals(){const s=S.golf.s,t=(a,b)=>s.slice(a,b).reduce((x,v)=>x+(+v||0),0);$("gt0").textContent=t(0,9)||"";$("gt9").textContent=t(9,18)||"";$("gtot").textContent=t(0,18)||"–"}
 
 /* ---------- radio ---------- */
 $("top5").innerHTML=[0,1,2,3,4].map(i=>`<label>${i+1}<input data-top="${i}" value="${esc(S.top[i])}" placeholder="Song" aria-label="Top five, number ${i+1}"></label>`).join("");
@@ -648,8 +676,7 @@ document.addEventListener("change",async e=>{const t=e.target;
 document.addEventListener("input",e=>{const t=e.target;
  if(t.matches(".nm")){const v=t.value.trim();if(v)S.n[t.dataset.k]=v.slice(0,80);else delete S.n[t.dataset.k];save()}
  else if(t.dataset.nk){const v=t.value;if(v.trim())S.notes[t.dataset.nk]=v.slice(0,4000);else delete S.notes[t.dataset.nk];save()}
- else if(t.dataset.top!==undefined){S.top[+t.dataset.top]=t.value.slice(0,80);save()}
- else if(t.dataset.g!==undefined){const v=parseInt(t.value);S.golf.s[+t.dataset.g]=v>0&&v<20?v:"";golfTotals();save()}});
+ else if(t.dataset.top!==undefined){S.top[+t.dataset.top]=t.value.slice(0,80);save()}});
 let msgT;function alertMsg(m){const s=$("sync");s.textContent=m;clearTimeout(msgT);msgT=setTimeout(()=>s.textContent=ref?SYNC_OK:"Saved on this device",4000)}
 document.addEventListener("click",async e=>{const ab=e.target.closest("[data-all]");
  if(ab){const i=+ab.dataset.all;S.m["c"+i]=S.m["c"+i].map(()=>true);renderChapters();$("ch"+i).open=true;save();return}
@@ -657,16 +684,20 @@ document.addEventListener("click",async e=>{const ab=e.target.closest("[data-all
  const b=e.target.closest(".step button");if(!b)return;
  const k=b.dataset.k,def=ALL.find(r=>r[0]===k);let v=(S.c[k]||0)+(+b.dataset.d);v=Math.max(0,def[3]?Math.min(def[3],v):v);
  if(v)S.c[k]=v;else delete S.c[k];refreshRow(k);save();const nb=document.querySelector(`.step button[data-k="${k}"][data-d="${b.dataset.d}"]`);if(nb)nb.focus()});
-$("golfSave").addEventListener("click",()=>{const s=S.golf.s;if(s.some(v=>v==="")){alertMsg("Fill in all 18 holes first");return}
- const t=s.reduce((x,v)=>x+v,0);if(!S.golf.best||t<S.golf.best){S.golf.best=t;alertMsg(`New best: ${t} strokes`)}else alertMsg(`${t} strokes. Your best is still ${S.golf.best}`);renderGolf();save()});
-$("golfClear").addEventListener("click",()=>{S.golf.s=Array(18).fill("");renderGolf();save()});
+
 $("copy").addEventListener("click",async()=>{const b=$("copy");try{await navigator.clipboard.writeText($("code").value);b.textContent="Copied"}catch(e){$("code").select();b.textContent="Select and copy the code above"}setTimeout(()=>b.textContent="Copy code",2500)});
 $("restore").addEventListener("click",()=>{const b=$("restore");try{S=clean(JSON.parse(decodeURIComponent(escape(atob($("code").value.trim())))));renderAll();save();b.textContent="Restored"}catch(e){b.textContent="That code didn't work"}setTimeout(()=>b.textContent="Restore from code",2500)});
 let armed=false;$("reset").addEventListener("click",()=>{const b=$("reset");if(!armed){armed=true;b.textContent="Tap again to wipe all progress";setTimeout(()=>{armed=false;b.textContent="Reset everything"},4000);return}
  armed=false;b.textContent="Reset everything";S=clean(null);renderAll();save()});
 
-function renderAll(){document.querySelectorAll("[data-flag]").forEach(el=>el.checked=!!S.f[el.dataset.flag]);renderChapters();renderCounters();renderNotes();renderGolf();renderTracks();
- document.querySelectorAll("[data-top]").forEach(el=>el.value=S.top[+el.dataset.top]);stats()}
+$("vForm").addEventListener("submit",e=>{e.preventDefault();const n=$("vName").value.trim();if(!n)return;
+ S.v.push({id:Math.random().toString(36).slice(2,10).replace(/[^a-z0-9]/g,"x").padEnd(6,"x"),n:n.slice(0,60),t:$("vType").value,a:$("vArea").value.trim().slice(0,60),d:$("vDesc").value.trim().slice(0,140)});
+ ["vName","vArea","vDesc"].forEach(id=>$(id).value="");renderVenues();renderNotes();renderShots();save();alertMsg(`Added ${n}`)});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-rmv]");if(!b)return;const id=b.dataset.rmv,x=S.v.find(v=>v.id===id);
+ if(b.dataset.armed){S.v=S.v.filter(v=>v.id!==id);delete S.notes["u-"+id];saveImg("u-"+id,null);renderVenues();renderNotes();renderShots();save()}
+ else{b.dataset.armed=1;b.textContent="Tap again to remove";setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent="Remove"}},3500)}});
+function renderAll(){document.querySelectorAll("[data-flag]").forEach(el=>el.checked=!!S.f[el.dataset.flag]);renderChapters();renderCounters();renderVenues();renderNotes();renderTracks();
+ document.querySelectorAll("[data-top]").forEach(el=>el.value=S.top[+el.dataset.top]);renderShots();stats()}
 renderAll();renderShots();show();
 
 (async()=>{try{if(!window.claude||!claude.use)return;
