@@ -74,10 +74,12 @@ h3{font:400 20px/1.15 Anton,Impact,sans-serif;margin:16px 0 4px}
 .notes textarea{width:100%;min-height:96px;font:16px/1.6 Lato,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
  background:var(--card) repeating-linear-gradient(transparent 0 calc(1.6em - 1px),color-mix(in srgb,var(--cyan) 30%,transparent) calc(1.6em - 1px) 1.6em);background-attachment:local;background-position:0 8px;resize:vertical}
 .entry.sm{margin:10px 0;padding:8px 16px 4px}
-.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 12px}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 12px;align-items:start}
 @media(min-width:700px){.gal{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .gal .shot .sun{display:none}
-.gal .shot{aspect-ratio:4/3;margin:0}.gal .shot label{font-size:12px;padding:6px 10px;min-height:36px}
+.gal .shot{aspect-ratio:3/4;margin:0}
+.gal .shot.has{aspect-ratio:auto;display:block}
+.gal .shot.has img{position:static;width:100%;height:auto;display:block}.gal .shot label{font-size:12px;padding:6px 10px;min-height:36px}
 .clw{margin:8px 0 10px}.clh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.clh b{font:400 17px/1.2 Anton,Impact,sans-serif}.clc{font:700 13px Lato,sans-serif;color:var(--mag);font-variant-numeric:tabular-nums}
 .cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 14px}
 .cl label{display:flex;gap:10px;align-items:center;min-height:46px;border-bottom:1px solid var(--line);cursor:pointer;font-size:15px}
@@ -674,7 +676,7 @@ function renderNotes(){document.querySelectorAll("[data-note]").forEach(el=>{con
  el.innerHTML=`<div class="neon">Field notes</div><textarea data-nk="${k}" aria-label="Your notes" placeholder="What you spotted, where, and what happened">${esc(S.notes[k]||"")}</textarea>`})}
 function renderShot(el){const k=el.dataset.img,own=IMG[k],d=DEF[k],src=own||(d&&d[0]);el.classList.toggle("has",!!src);
  const pos=!own&&d?` style="object-position:${d[1]}"`:"",alt=own?"Your screenshot":(d?d[2]:"");
- el.innerHTML=(src?`<img src="${src}" alt="${esc(alt)}" loading="lazy"${pos}>`:`<span class="sun"></span><span class="stripes"></span>`)+`<label>${src?"Replace":"＋ Add your screenshot"}<input type="file" accept="image/*" data-up="${k}"></label>`+(own?`<button class="rm" type="button" data-rm="${k}">${d?"Restore original":"Remove"}</button>`:"")}
+ el.innerHTML=(src?`<img src="${src}" alt="${esc(alt)}" loading="lazy"${pos}>`:`<span class="sun"></span><span class="stripes"></span>`)+`<label>${src?"Replace":el.closest(".gal")?"＋ Add photo":"＋ Add your screenshot"}<input type="file" accept="image/*" data-up="${k}"></label>`+(own?`<button class="rm" type="button" data-rm="${k}">${d?"Restore original":"Remove"}</button>`:"")}
 function renderShots(){document.querySelectorAll("[data-img]").forEach(renderShot)}
 async function shrink(file){const url=URL.createObjectURL(file);const img=new Image();await new Promise((ok,no)=>{img.onload=ok;img.onerror=no;img.src=url});
  let w=Math.min(1200,img.naturalWidth),q=.78,out="";
