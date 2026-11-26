@@ -74,6 +74,10 @@ h3{font:400 20px/1.15 Anton,Impact,sans-serif;margin:16px 0 4px}
 .notes textarea{width:100%;min-height:96px;font:16px/1.6 Lato,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
  background:var(--card) repeating-linear-gradient(transparent 0 calc(1.6em - 1px),color-mix(in srgb,var(--cyan) 30%,transparent) calc(1.6em - 1px) 1.6em);background-attachment:local;background-position:0 8px;resize:vertical}
 .entry.sm{margin:10px 0;padding:8px 16px 4px}
+.gal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 12px}
+@media(min-width:700px){.gal{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.gal .shot .sun{display:none}
+.gal .shot{aspect-ratio:4/3;margin:0}.gal .shot label{font-size:12px;padding:6px 10px;min-height:36px}
 .clw{margin:8px 0 10px}.clh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.clh b{font:400 17px/1.2 Anton,Impact,sans-serif}.clc{font:700 13px Lato,sans-serif;color:var(--mag);font-variant-numeric:tabular-nums}
 .cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 14px}
 .cl label{display:flex;gap:10px;align-items:center;min-height:46px;border-bottom:1px solid var(--line);cursor:pointer;font-size:15px}
@@ -330,6 +334,18 @@ html{overflow-x:clip;scroll-padding-top:64px}
 </article>
 <h3>Gangs</h3>
 <div id="gangs"></div>
+<h3>Art of Leonida</h3>
+<article class="entry" id="e-art">
+<p class="kicker">CULTURE • STREET ART</p><h2>Art of Leonida</h2><div class="tag neon">every wall a canvas</div>
+<p class="lede">Vice City's walls are some of the best-dressed in the series. Rockstar brought in more than 50 real street artists to paint the murals around the city, and much of it is concentrated in Stockyard, the city's take on Miami's Wynwood arts district.</p>
+<p>Two artists get their own collections in the game. Point the <span class="pl">WAiNK</span> app at a piece and it's logged under <i>Progress › Collections</i>, just like a WAiNK scan. These two sets <b>don't</b> count towards the 100 WAiNK scans you need for 100%, so collect them for the joy of it.</p>
+<div id="artists"></div>
+<h3>Gallery</h3>
+<p class="note">Your favourite pieces. Tap a frame to add a screenshot.</p>
+<div class="gal"><div class="shot" data-img="art1"></div><div class="shot" data-img="art2"></div><div class="shot" data-img="art3"></div><div class="shot" data-img="art4"></div><div class="shot" data-img="art5"></div><div class="shot" data-img="art6"></div></div>
+<div class="box rf"><h4>The real Florida</h4>Stockyard is Vice City's <b>Wynwood</b>, the Miami neighbourhood whose warehouse walls became one of the world's best-known open-air street-art districts. Rockstar has since teamed up with the <b>Wynwood Walls</b> museum on new murals by artists from the game.</div>
+<div class="notes" data-note="art"></div>
+</article>
 </section>
 
 <section id="t-goingout" hidden>
@@ -448,7 +464,8 @@ function migrate(i,a){const old=LEGACY[i]&&LEGACY[i][a.length];if(!old||a.length
 const known=(i,j)=>(NAMES[i]&&NAMES[i][j])||"";
 const OPT=[["Get Shirley's Rum","Steal the Scooter"],["Kingpin Bowling","Impounded Vehicle","Veteran Hunted (Jason only)"]];
 const C100=[["cards","Collectible cards","480 cards in 18 sets, counted by set",18,15],["waink","WAiNK locations","",108,100],["under","Underwater discoveries","",33,33],["mags","Magazines, books and comics","",34,30],["medit","Meditation spots","",18,15],["flam","Cocaine flamingos","",125,100],["play","Unique playlists","",2,2],["style","Discovered styles","",79,70],["kent","Kenton sets","Treasure diving with Kenton",7,5]];
-const CX=[["art","Ahol street art","",112,0],["mural","1010 murals","",5,0],["swap","Book swaps","",7,0],["wyman","Wyman's cars","Ultimate Edition only",5,0],["doub","Doubloons","Up to 99 can be sold",99,0],["meteor","Meteorites","No fixed total",0,0]];
+const ARTC=[["art","AHOL street art found","Scan with the WAiNK app",112,0]],TENC=[["mural","1010 murals found","Scan with the WAiNK app",5,0]];
+const CX=[["swap","Book swaps","",7,0],["wyman","Wyman's cars","Ultimate Edition only",5,0],["doub","Doubloons","Up to 99 can be sold",99,0],["meteor","Meteorites","No fixed total",0,0]];
 const WT=[["animals","Animals studied","Adds up automatically from the groups below",255,100]];
 const WG=[["hunt","Hunts","",61,0],["fish","Fish","",35,0],["mam","Mammals","",18,0],["pets","Cats and dogs","",34,0],["rep","Reptiles","",6,0],["bird","Birds","",60,0],["other","Other","Anything the groups above don't cover",41,0]];
 const STT=[["stunts","Stunts completed","Adds up automatically from the four types below",397,300]];
@@ -590,7 +607,7 @@ function refreshChapter(i){const el=$("ch"+i),a=S.m["c"+i],n=CH[i],d=a.filter(Bo
 
 /* ---------- counters ---------- */
 const HOOPS=[["hoops","Basketball hoops scored","A hoop counts once you score at it",100,90]];
-const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB,stuntTotal:STT,stuntGroups:SG,hoopRow:HOOPS};
+const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB,stuntTotal:STT,stuntGroups:SG,hoopRow:HOOPS,ahRow:ARTC,tenRow:TENC};
 const ALL=Object.values(LISTS).flat();
 function rowHTML([k,label,sub,total,need]){const v=S.c[k]||0,auto=k in AUTO;
  const right=need?(v>=need?`<span class="ok">100% target met</span>`:`${need-v} more for 100%`):(total&&v>=total?`<span class="ok">Complete</span>`:"");
@@ -607,6 +624,8 @@ const stub=(key,name,line,badge,tall,extra)=>{const shot=`<div class="shot${tall
  return `<article class="entry sm${has?" pic":""}"><div class="stub"><h3>${esc(name)}</h3><span class="badge">${badge}</span></div>${line?`<p style="margin:4px 0">${line}</p>`:""}${extra||""}${has?shot:""}<details class="more"><summary>${has?"Add notes":"Add a photo and notes"}</summary>${has?"":shot}<div class="notes" data-note="${key}"></div></details></article>`};
 const MAIN=[["jason","Jason Duval","Protagonist"],["lucia","Lucia Caminos","Protagonist"],["cal","Cal Hampton",""],["boobie","Boobie Ike",""],["drequan","Dre'Quan Priest",""],["dimez","Real Dimez",""],["raul","Raul Bautista",""],["brian","Brian Heder",""]];
 $("peopleMain").innerHTML=MAIN.map(([k,n,r])=>stub("p-"+k,n,r?`<span class="pl">${r}</span>`:"","NOT WRITTEN UP YET",true)).join("");
+$("artists").innerHTML=stub("a-ahol","AHOL","Miami's own Ahol Sniffs Glue, a fixture of the Wynwood scene whose sleepy, droopy-eyed motifs turn up all over the city. His pieces are the big collection.","IN THE GAME",false,`<div id="ahRow"></div>`)
+ +stub("a-1010","1010","Hamburg-based muralist known for colourful, layered shapes that seem to open up holes in the wall. Five murals to find.","IN THE GAME",false,`<div id="tenRow"></div>`);
 $("gangs").innerHTML=stub("g-fcmc","Final Chapter MC",`<span class="pl">Outlaw biker club</span>. Leonida's biker gang, rooted in Ambrosia, where the sugar refinery is the main employer and the club, by Rockstar's account, supplies most of everything else. Colours: black.`,"NOT WRITTEN UP YET")
  +stub("g-m7","M7 (Marabunta Grande)",`<span class="pl">Street gang</span>. A Salvadoran-rooted gang carried over from GTA V, and spotted all over the state.`,"NOT WRITTEN UP YET");
 const pl=t=>`<span class="pl">${t}</span>`,NW="NOT WRITTEN UP YET";
