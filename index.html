@@ -74,6 +74,10 @@ h3{font:400 20px/1.15 Anton,Impact,sans-serif;margin:16px 0 4px}
 .notes textarea{width:100%;min-height:96px;font:16px/1.6 Lato,sans-serif;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 12px;
  background:var(--card) repeating-linear-gradient(transparent 0 calc(1.6em - 1px),color-mix(in srgb,var(--cyan) 30%,transparent) calc(1.6em - 1px) 1.6em);background-attachment:local;background-position:0 8px;resize:vertical}
 .entry.sm{margin:10px 0;padding:8px 16px 4px}
+.clw{margin:8px 0 10px}.clh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.clh b{font:400 17px/1.2 Anton,Impact,sans-serif}.clc{font:700 13px Lato,sans-serif;color:var(--mag);font-variant-numeric:tabular-nums}
+.cl{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:0 14px}
+.cl label{display:flex;gap:10px;align-items:center;min-height:46px;border-bottom:1px solid var(--line);cursor:pointer;font-size:15px}
+.cl small{color:var(--mute)}.cl input:checked+span{color:var(--mute)}
 .vform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 6px}
 .vform label{display:flex;flex-direction:column;gap:4px;font:700 13px Lato,sans-serif;color:var(--mute)}
 .vform .wide,.vform .btn{grid-column:1/-1}
@@ -136,6 +140,12 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 .top5 label{display:flex;align-items:center;gap:10px;color:#5fe3f2;font-weight:900}
 .filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
 .filter input[type=search]{flex:1 1 200px;height:44px;font:16px Lato,sans-serif;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:var(--card);color:var(--ink)}
+.tl{margin:6px 0 4px;padding-left:2.2em;columns:2 260px;column-gap:24px}
+.tl li{break-inside:avoid;padding:4px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.35}
+.tl b{font-weight:900}.tl span{color:var(--mute)}
+.jump{display:flex;gap:8px;margin:6px 0 4px;padding-bottom:4px;overflow-x:auto;scrollbar-width:none}
+html{overflow-x:clip;scroll-padding-top:64px}
+.jump a{flex:none;border:1px solid var(--line);border-radius:22px;padding:10px 14px;color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;min-height:44px;background:var(--card)}
 .tools{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
 .tools summary{padding:12px 0;cursor:pointer;font-weight:700;min-height:44px}
 .tools textarea{width:100%;min-height:80px;font:13px ui-monospace,monospace;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px}
@@ -151,7 +161,7 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <div class="neon">welcome to</div>
 <h1>Leonida Field Guide</h1>
 <div class="stats">
-<div class="stat"><b id="sStory">0/91</b><span>story missions</span></div>
+<div class="stat"><b id="sStory">0/101</b><span>story missions</span></div>
 <div class="stat"><b id="sGoals">0/13</b><span>100% goals met</span></div>
 </div>
 </header>
@@ -372,7 +382,7 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <div class="strip"><div><b>WHERE</b>Buckskin Swamp, Vice-Dale County</div><div><b>HOLES</b>18</div><div><b>FOR 100%</b>Finish 2 of the 3 mini golf courses</div></div>
 <p>If Leonida had a state sport, it might well be adventure golf. King Gator is roadside Florida at its most gloriously over the top: themed putting holes with ramps, obstacles and moving parts, all overseen by a reptile with no interest in your handicap. Fewest strokes wins, and the course is open any time, so there's no rush.</p>
 <p><b>Our tip:</b> treat each hole as a puzzle first and a putt second. Watch the moving parts go round once before you swing, and save the power shots for the ramps.</p>
-<div class="box dm"><h4>Also in Leonida</h4><b>Frontier Adventure Golf</b>, Waning Sands, Leonard County.<br><b>Dino Golf Challenge</b>, Frogswater, Kelly County.<br>Your rounds and best scores are under <i>Progress › Activities › Sports</i>.</div>
+<div class="box dm"><div id="mgList"></div><p class="note" style="margin:6px 0 0">Your rounds and best scores are under <i>Progress › Activities › Sports</i>.</p></div>
 
 <div class="notes" data-note="golf"></div>
 </article>
@@ -381,27 +391,16 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 <p>Kenton's dives off the Keys are the best early earner in the game: seven treasure sets, a metal detector, and a lot of time spent upside down in clear water. Track your sets in <a href="#collectibles">Collectibles</a>.</p>
 <div class="notes" data-note="dive"></div>
 </article>
+<h3>More activities</h3>
+<div id="actStubs"></div>
 </section>
 
 <section id="t-radio" hidden>
 <p class="kicker">CULTURE • ON THE RADIO</p>
-<h2>Flash FM</h2><div class="tag neon">pop, all night long</div>
-<div class="split">
-<div><div class="shot" data-img="flash"></div><p class="cap">Tune in, turn up.</p></div>
-<div class="facts cy"><h4>On air</h4><dl>
-<dt>SOUND</dt><dd>Pop and dance, old and new</dd>
-<dt>HOSTS</dt><dd>Robyn &amp; Alex</dd>
-<dt>VOICED BY</dt><dd>Robyn and Alex Consani</dd>
-<dt>SINCE</dt><dd>Vice City days</dd>
-<dt>LISTEN</dt><dd>In the car, or on foot through your phone</dd></dl></div>
-</div>
-<p>Flash FM is the city's oldest pop habit. Back in the Vice City era it ran on big-haired synthpop and new wave; today it's a glossy, sweat-on-the-dancefloor mix of current pop, club records and the kind of 2000s throwbacks you didn't realise you still knew every word of.</p>
-<p>The hosts are <span class="pl">Robyn</span> and <span class="pl">Alex</span>, voiced by Swedish pop royalty Robyn and model Alex Consani. Robyn even sneaks two of her own records onto the playlist, which seems only fair.</p>
-<div class="box rf"><h4>My Flash FM top five</h4><div class="top5" id="top5"></div></div>
-<h3>Tracklist <span id="trCount" class="note"></span></h3>
-<div class="filter"><input type="search" id="trq" placeholder="Search artist or song" aria-label="Search the tracklist"><label class="btn" style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="trHide"> Hide heard</label></div>
-<div class="tracks" id="tracks"></div>
-<div class="notes" data-note="radio"></div>
+<h2>Radio</h2><div class="tag neon">stay tuned</div>
+<p class="note">Your stations, with the full playlists and a top five for each. Tap a station name to jump to it.</p>
+<div class="scroll jump" id="stJump"></div>
+<div id="stations"></div>
 </section>
 
 <section id="t-collectibles" hidden>
@@ -435,10 +434,17 @@ input[type=checkbox]:checked::after{content:"";width:12px;height:7px;border:3px 
 </main>
 <script>
 {
-const CH=[22,11,26,25,7];
+const CH=[25,18,26,25,7];const TOTAL=CH.reduce((a,b)=>a+b,0);
 const TITLES=["Just Like Paradise","Paradise Lost"];
-const NAMES=[["Prologue","Gone Fishing","Gear Up","Just A Scratch","Lab Fees","Unwanted Attention","Pipework","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Buck Me","Clean Up After Donnie","Down to Earth","Clear Skies","Day Release","Swamped","","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],
-["What's in the Bag?","Ambulance Chaser","Just Moved In","Girls' Trip","Moses","Daily Driver","Slam Dunk","Breakfast Run","Coffee Break","Afternoon Delight","Checking Out"]];
+const NAMES=[["Prologue","Gone Fishing","Gear Up","Just A Scratch","Lab Fees","Unwanted Attention","Pipework","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Buck Me","Clean Up After Donnie","Down to Earth","Deposit Cash Into BuckMe","Save for the Future","Clear Skies","Day Release","Building a Life","Swamped","Don Gone","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],
+["What's in the Bag?","Ambulance Chaser","Take Care of Jason","Overnight Charges","Just Moved In","Girls' Trip","Moses","New Look","How Do I Look?","Painkiller Supplier","Daily Driver","Behind on Payments","Slam Dunk","Breakfast Run","Coffee Break","Prepare for Vice City","Afternoon Delight","Checking Out"]];
+/* earlier layouts, so saved ticks follow their mission when missions are added */
+const C1A=["Prologue","Gone Fishing","Gear Up","Just A Scratch","Lab Fees","Unwanted Attention","Pipework","Hey Arnold!","Island Dreams","Feng Shui","Coming Home","Buck Me","Clean Up After Donnie","Down to Earth","Clear Skies","Day Release"];
+const LEGACY=[{22:[...C1A,"Swamped","Don Gone","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"],23:[...C1A,"Building a Life","Swamped","Don Gone","Recalibration","Tourist Trap","Home Sweet Home","Discharge Time"]},
+{11:["What's in the Bag?","Ambulance Chaser","Just Moved In","Girls' Trip","Moses","Daily Driver","Slam Dunk","Breakfast Run","Coffee Break","Afternoon Delight","Checking Out"]}];
+function migrate(i,a){const old=LEGACY[i]&&LEGACY[i][a.length];if(!old||a.length===CH[i])return a;
+ const map={};old.forEach((n,j)=>map[n]=!!a[j]);const v=NAMES[i].map(n=>n in map?map[n]:undefined);
+ return v.map((x,j)=>{if(x!==undefined)return x;let p=j-1,q=j+1;while(p>=0&&v[p]===undefined)p--;while(q<v.length&&v[q]===undefined)q++;return p>=0&&q<v.length&&v[p]&&v[q]})}
 const known=(i,j)=>(NAMES[i]&&NAMES[i][j])||"";
 const OPT=[["Get Shirley's Rum","Steal the Scooter"],["Kingpin Bowling","Impounded Vehicle","Veteran Hunted (Jason only)"]];
 const C100=[["cards","Collectible cards","480 cards in 18 sets, counted by set",18,15],["waink","WAiNK locations","",108,100],["under","Underwater discoveries","",33,33],["mags","Magazines, books and comics","",34,30],["medit","Meditation spots","",18,15],["flam","Cocaine flamingos","",125,100],["play","Unique playlists","",2,2],["style","Discovered styles","",79,70],["kent","Kenton sets","Treasure diving with Kenton",7,5]];
@@ -451,7 +457,7 @@ const AUTO={animals:WG,stunts:SG};
 const groupSum=k=>AUTO[k].reduce((t,g)=>t+(S.c[g[0]]||0),0);
 function syncTotal(k){const v=groupSum(k);if(v)S.c[k]=v;else delete S.c[k]}
 const DB=[["veh","Vehicles (base models)","Scanned or owned",277,200],["wep","Standard weapons","",66,50],["wvar","Unique weapon variants","Not needed for 100%",130,0],["stand","Standout vehicles","Not needed for 100%",281,0]];
-const GOALS=[...C100,...WT,["stunts",0,0,397,300],["veh",0,0,277,200],["wep",0,0,66,50]];
+const GOALS=[...C100,...WT,["stunts",0,0,397,300],["hoops",0,0,100,90],["veh",0,0,277,200],["wep",0,0,66,50]];
 const STUBS=[["Vice City","Leonida's neon capital: beaches, nightlife and money in a hurry.","Miami"],["Grassrivers","Wetlands, airboats and things with teeth.","The Everglades"],["Port Gellhorn","A faded Gulf-coast town that's seen better days.","Florida's Panhandle coast"],["Ambrosia","Inland sugar-refinery country.","Central Florida's sugar towns"],["Mount Kalaga","Leonida's wild national park, for hikers and hunters.","Florida's wild interior"]];
 const TRACKS=`Addison Rae|Fame Is a Gun
 Aluna, Jayda G|Mine O’ Mine
@@ -544,10 +550,13 @@ const KEY="leonida-tracker-v1",IKEY="leonida-img-";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const str=(v,n)=>String(v==null?"":v).slice(0,n);
-const clean=o=>{const r={m:{},n:{},c:{},o:{},notes:{},tr:{},top:["","","","",""],golf:{s:Array(18).fill(""),best:0},f:{},v:[]};if(!o||typeof o!=="object")o={};
+const clean=o=>{const r={m:{},n:{},c:{},o:{},notes:{},tr:{},top:["","","","",""],golf:{s:Array(18).fill(""),best:0},f:{},v:[],t5:{}};if(!o||typeof o!=="object")o={};
+ const t5=o.t5&&typeof o.t5==="object"?o.t5:(Array.isArray(o.top)?{flash:o.top}:{});
+ for(const k of ["flash","cocoteo","emotion","vcfm","stockyard"])if(Array.isArray(t5[k]))r.t5[k]=[0,1,2,3,4].map(i=>str(t5[k][i],80));
  if(Array.isArray(o.v))r.v=o.v.filter(x=>x&&typeof x==="object"&&/^[a-z0-9]{4,12}$/.test(x.id)&&x.n).slice(0,200).map(x=>({id:x.id,n:str(x.n,60),t:["club","bar","eat"].includes(x.t)?x.t:"bar",a:str(x.a,60),d:str(x.d,140)}));
  if(o.f&&typeof o.f==="object")for(const k in o.f)if(/^[a-z0-9-]{1,30}$/.test(k)&&o.f[k])r.f[k]=1;
- for(let i=0;i<CH.length;i++){const a=o.m&&o.m["c"+i];r.m["c"+i]=Array.from({length:CH[i]},(_,j)=>!!(Array.isArray(a)&&a[j]))}
+ for(let i=0;i<CH.length;i++){let a=o.m&&o.m["c"+i];
+  if(Array.isArray(a))a=migrate(i,a);r.m["c"+i]=Array.from({length:CH[i]},(_,j)=>!!(Array.isArray(a)&&a[j]))}
  OPT.forEach((l,i)=>{const a=o.o&&o.o["c"+i];r.o["c"+i]=l.map((_,j)=>!!(Array.isArray(a)&&a[j]))});
  if(o.n&&typeof o.n==="object")for(const k in o.n)if(/^c\d-\d+$/.test(k))r.n[k]=str(o.n[k],80);
  if(o.c&&typeof o.c==="object")for(const k in o.c){const v=Math.max(0,Math.floor(+o.c[k]||0));if(v)r.c[k]=v}
@@ -580,7 +589,8 @@ function refreshChapter(i){const el=$("ch"+i),a=S.m["c"+i],n=CH[i],d=a.filter(Bo
  el.classList.toggle("done",d===n);el.querySelector(".cnt").textContent=`${d} / ${n}`;el.querySelector(".bar i").style.width=d/n*100+"%"}
 
 /* ---------- counters ---------- */
-const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB,stuntTotal:STT,stuntGroups:SG};
+const HOOPS=[["hoops","Basketball hoops scored","A hoop counts once you score at it",100,90]];
+const LISTS={col100:C100,colExtra:CX,wildTotal:WT,wildGroups:WG,dbase:DB,stuntTotal:STT,stuntGroups:SG,hoopRow:HOOPS};
 const ALL=Object.values(LISTS).flat();
 function rowHTML([k,label,sub,total,need]){const v=S.c[k]||0,auto=k in AUTO;
  const right=need?(v>=need?`<span class="ok">100% target met</span>`:`${need-v} more for 100%`):(total&&v>=total?`<span class="ok">Complete</span>`:"");
@@ -593,8 +603,8 @@ const DEF={map:["images/map.jpg","50% 45%","Map of Leonida"],mud:["images/mud.jp
 ["Vice City","Grassrivers","Port Gellhorn","Ambrosia","Mount Kalaga National Park"].forEach((n,i)=>DEF["place"+i]=[`images/place${i}.jpg`,"50% 50%",`${n} postcard`]);
 [["jason","Jason Duval"],["lucia","Lucia Caminos"],["cal","Cal Hampton"],["boobie","Boobie Ike"],["drequan","Dre'Quan Priest"],["dimez","Real Dimez"],["raul","Raul Bautista"],["brian","Brian Heder"]].forEach(([k,n])=>DEF["p-"+k]=[`images/p-${k}.jpg`,"50% 0",`${n} artwork`]);
 /* ---------- placeholders ---------- */
-const stub=(key,name,line,badge,tall)=>{const shot=`<div class="shot${tall?" tall":""}" data-img="${key}"></div>`,has=!!DEF[key];
- return `<article class="entry sm${has?" pic":""}"><div class="stub"><h3>${esc(name)}</h3><span class="badge">${badge}</span></div>${line?`<p style="margin:4px 0">${line}</p>`:""}${has?shot:""}<details class="more"><summary>${has?"Add notes":"Add a photo and notes"}</summary>${has?"":shot}<div class="notes" data-note="${key}"></div></details></article>`};
+const stub=(key,name,line,badge,tall,extra)=>{const shot=`<div class="shot${tall?" tall":""}" data-img="${key}"></div>`,has=!!DEF[key];
+ return `<article class="entry sm${has?" pic":""}"><div class="stub"><h3>${esc(name)}</h3><span class="badge">${badge}</span></div>${line?`<p style="margin:4px 0">${line}</p>`:""}${extra||""}${has?shot:""}<details class="more"><summary>${has?"Add notes":"Add a photo and notes"}</summary>${has?"":shot}<div class="notes" data-note="${key}"></div></details></article>`};
 const MAIN=[["jason","Jason Duval","Protagonist"],["lucia","Lucia Caminos","Protagonist"],["cal","Cal Hampton",""],["boobie","Boobie Ike",""],["drequan","Dre'Quan Priest",""],["dimez","Real Dimez",""],["raul","Raul Bautista",""],["brian","Brian Heder",""]];
 $("peopleMain").innerHTML=MAIN.map(([k,n,r])=>stub("p-"+k,n,r?`<span class="pl">${r}</span>`:"","NOT WRITTEN UP YET",true)).join("");
 $("gangs").innerHTML=stub("g-fcmc","Final Chapter MC",`<span class="pl">Outlaw biker club</span>. Leonida's biker gang, rooted in Ambrosia, where the sugar refinery is the main employer and the club, by Rockstar's account, supplies most of everything else. Colours: black.`,"NOT WRITTEN UP YET")
@@ -618,6 +628,19 @@ $("minorPG").innerHTML=[
 ].map(([k,n,l])=>stub("p-"+k,n,l,NW)).join("");
 
 
+const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
+const checklist=(id,title,items,need,fold)=>{const list=`<div class="cl">${items.map(([n,sub])=>`<label><input type="checkbox" data-flag="${id}-${slug(n)}"><span>${esc(n)}${sub?` <small>${esc(sub)}</small>`:""}</span></label>`).join("")}</div>`;
+ return `<div class="clw" data-cl="${id}"><div class="clh"><b>${title}</b><span class="clc"></span></div>${need?`<p class="note" style="margin:2px 0 6px">${need}</p>`:""}${fold?`<details class="more"><summary>${fold}</summary>${list}</details>`:list}</div>`};
+function clCounts(){document.querySelectorAll("[data-cl]").forEach(w=>{const b=w.querySelectorAll("input[data-flag]"),n=[...b].filter(x=>x.checked).length;w.querySelector(".clc").textContent=`${n} of ${b.length}`})}
+const FISH=["American Eel", "Atlantic Spadefish", "Atlantic Spanish Mackerel", "Atlantic Tarpon", "Atlantic Thread Herring", "Black Drum", "Black Grouper", "Bluegill", "Bluestriped Grunt", "Candy Fish", "Channel Catfish", "Cobia", "Common Snook", "Great Barracuda", "Greater Amberjack", "Green Moray Eel", "Hogfish", "Lake Chubsucker", "Largemouth Bass", "Leonida Gar", "Littlehead Porgy", "Mahi Mahi", "Northern Red Snapper", "Permit", "Red Lionfish", "Redbreast Sunfish", "Redfin Pickerel", "Rock Sea Bass", "Salt Fish", "Spotted Moray Eel", "Stoplight Parrotfish", "Striped Bass", "Tiger Grouper", "Yellowfin Tuna", "Yellowtail Snapper"];
+$("mgList").innerHTML=checklist("mg","Mini golf courses played",[["King Gator Adventure Golf","Buckskin Swamp, Vice-Dale County"],["Frontier Adventure Golf","Waning Sands, Leonard County"],["Dino Golf Challenge","Frogswater, Kelly County"]],"Finish any two for 100%.");
+$("actStubs").innerHTML=[
+ ["a-fishing","Fishing","Catch and release only. The game tracks every species you land, so here are all 35 to tick off.",checklist("fish","Species caught",FISH.map(f=>[f]),"","Show all 35 species")],
+ ["a-hunting","Hunting","Mount Kalaga National Park is the home of Leonida's hunting.",""],
+ ["a-golf","Golf","Two full-size courses to play.",checklist("golf","Courses played",[["Leaf Links Golf Challenge","Vice Beach"],["Mount Hailes Golf Challenge","Waning Sands, Leonard County"]])],
+ ["a-basketball","Basketball","Courts all over the state, rooftops included.",`<div id="hoopRow"></div>`],
+ ["a-pool","Pool","Seventeen tables around the state, but only seven have someone to play against.",checklist("pool","Opponents beaten",[["The Rusty Anchor","Key Lento"],["Skeeter's","Hamlet"],["Zotico's","Baslero, Vice City"],["The Thirsty Wolf","Belville"],["Jacob's Tavern","Milport"],["Delights Cabaret","Port Gellhorn"],["Kowaachobee Cafe & Bar","Buckskin Swamp"]],"Beat any five different opponents for 100%.")]
+].map(([k,n,l,x])=>stub(k,n,esc(l),"NOT WRITTEN UP YET",false,x)).join("");
 /* ---------- going out ---------- */
 const VEN={club:[["nine1nine","NINE1NINE","Nightclub in Downtown Vice City."],["vault","The Vault","A more traditional nightclub, just north of Downtown Vice City."],["jack","Jack of Hearts","Strip club and nightclub hybrid in Crosstown, Vice City."],["delights","Delights Cabaret","Port Gellhorn's strip club, a short walk from the Starlet Motel."]],
 bar:[["rusty","The Rusty Anchor","Key Lento's dive bar: bait, beer and boat gossip."],["effluvia","Effluvia","Rooftop bar and lounge on Vice Beach."],["hoodwinks","Hoodwinks Liquor Bar","Neighbourhood bar in Crosstown, Vice City."],["thirsty","The Thirsty Wolf","Bar in Vice-Dale County."],["chickys","Chicky's Tiki Bar","Tiki bar down in the Keys."],["mutineer","The Cheeky Mutineer","Keys bar for the sunburnt and the thirsty."],["manatee","Manatee's Rest","Waterside bar in the Keys."],["hoghouse","The Hog House Bar","Kelly County bar. Expect bikes outside."]],
@@ -640,16 +663,25 @@ async function shrink(file){const url=URL.createObjectURL(file);const img=new Im
  URL.revokeObjectURL(url);return out}
 
 /* ---------- radio ---------- */
-$("top5").innerHTML=[0,1,2,3,4].map(i=>`<label>${i+1}<input data-top="${i}" value="${esc(S.top[i])}" placeholder="Song" aria-label="Top five, number ${i+1}"></label>`).join("");
-function renderTracks(){const q=$("trq").value.trim().toLowerCase(),hide=$("trHide").checked;
- $("tracks").innerHTML=TRACKS.map(([a,t],i)=>{const on=!!S.tr[i];if(hide&&on)return "";if(q&&!(a+" "+t).toLowerCase().includes(q))return "";
-  return `<div class="tr"><input type="checkbox" id="tr${i}" data-tr="${i}"${on?" checked":""}><label for="tr${i}"><b>${esc(a)}</b> <span>${esc(t)}</span></label></div>`}).join("")||`<p class="note">No tracks match.</p>`;
- $("trCount").textContent=`${Object.keys(S.tr).length} of ${TRACKS.length} heard`}
-$("trq").addEventListener("input",renderTracks);$("trHide").addEventListener("change",renderTracks);
+const STATIONS=[{"k": "flash", "name": "Flash FM", "tag": "pop, all night long", "img": "flash", "cap": "Tune in, turn up.", "facts": [["SOUND", "Pop and dance, old and new"], ["HOSTS", "Robyn &amp; Alex"], ["VOICED BY", "Robyn and Alex Consani"], ["SINCE", "Vice City days"]], "desc": "<p>Flash FM is the city's oldest pop habit. Back in the Vice City era it ran on big-haired synthpop and new wave; today it's a glossy, sweat-on-the-dancefloor mix of current pop, club records and the kind of 2000s throwbacks you didn't realise you still knew every word of.</p>\n<p>The hosts are <span class=\"pl\">Robyn</span> and <span class=\"pl\">Alex</span>, voiced by Swedish pop royalty Robyn and model Alex Consani. Robyn even sneaks two of her own records onto the playlist, which seems only fair.</p>", "tracks": "__FLASH__"}, {"k": "cocoteo", "name": "Cocoteo FM", "tag": "el party que nunca se apaga", "cap": "", "facts": [["SOUND", "Modern Latin: bachata, merengue, dembow, reggaeton"], ["HOSTS", "El Martillo &amp; La Gata"], ["VOICED BY", "Bad Bunny and RaiNao"]], "desc": "<p>Leonida's home for modern Latin music, and the loudest thing in Little Cuba on a Saturday night. Bad Bunny plays host as <span class=\"pl\">El Martillo</span>, with RaiNao as <span class=\"pl\">La Gata</span>, and both of them turn up on the playlist too.</p>", "tracks": [["Bad Bunny", "Otra Noche en Miami"], ["Bad Bunny", "EoO"], ["Anuel AA & Haze", "Amanece"], ["Axel Rulay feat. Farruko & El Alfa", "Si Es Trucho Es Trucho (Remix)"], ["Bb Trickz", "Malvada"], ["CA7RIEL & Paco Amoroso", "Dumbai"], ["Calle 13", "Suave Mix (Blass Remix)"], ["Chimbala & Omega", "Se Me Nota (Agarrame)"], ["Don Omar", "Intocable"], ["El Alfa, CJ, Chael Produciendo & El Cherry Scom", "La Mamá de la Mamá"], ["Elvis Crespo", "Nuestra Canción"], ["Farruko", "Pepas"], ["FEID", "CHORRITO PA LAS ANIMAS"], ["Judeline", "Besito"], ["KAROL G & Mariah Angeliq", "EL MAKINON"], ["Latin Mafia & Omar Apollo", "Hecho para ti"], ["MJ Nebreda", "La Pari"], ["Myke Towers", "Girl"], ["RaiNao & El Laberinto del Coco", "mariposas en el estómago"], ["Romeo Santos & El Chaval de la Bachata", "Canalla"], ["ROSALÍA", "CANDY"], ["Slow Jamz", "Sin Dormir"], ["Tainy & Bad Bunny", "SONAR"], ["Tokischa & Bulin 47", "CELOS"], ["Young Miko", "Ni le cabe"], ["Arca", "Sanduneguea"], ["Fuerza Regida", "Suzuki"], ["Kali Uchis & Helado Negro", "Lárgate"], ["Jhayco", "X"], ["Rauw Alejandro", "Macacoa 2000"]]}, {"k": "emotion", "name": "Emotion 98.3", "tag": "slow dance, fast car", "cap": "", "facts": [["SOUND", "Soft rock and power ballads"], ["HOST", "Doug Stanhope"], ["SINCE", "Vice City days"]], "desc": "<p>The soft-rock station is back from the original Vice City, still dealing in power ballads, slow dances and the most famous drum fill in pop. Comedian Doug Stanhope is on the mic, which is either perfect or a terrible idea.</p>", "tracks": [["Ace", "How Long"], ["Air Supply", "All Out of Love"], ["Bruce Hornsby and the Range", "The Way It Is"], ["Captain & Tennille", "But I Think It's a Dream"], ["Carly Simon", "Coming Around Again"], ["Cheap Trick", "The Flame"], ["Chicago", "Hard to Say I'm Sorry / Get Away"], ["Chris Isaak", "Lie to Me"], ["Chris Rea", "Fool (If You Think It's Over)"], ["Cliff Richard", "Devil Woman"], ["Def Leppard", "Love Bites"], ["Double", "The Captain of Her Heart"], ["Dr. Hook", "When You're in Love with a Beautiful Woman"], ["Elton John", "I Guess That's Why They Call It the Blues"], ["Eric Carmen", "All by Myself"], ["Exile", "Kiss You All Over"], ["Gary Wright", "Dream Weaver"], ["George Michael", "Father Figure"], ["Genesis", "Tonight, Tonight, Tonight"], ["Heart", "Alone"], ["Juice Newton", "Angel of the Morning"], ["Lindsey Buckingham", "Trouble"], ["Patti LaBelle & Michael McDonald", "On My Own"], ["Phil Collins", "In the Air Tonight"], ["Phil Collins", "Against All Odds (Take a Look at Me Now)"], ["Robert Plant", "In the Mood"], ["Ronnie Milsap", "Stranger in My House"], ["Roxette", "Listen to Your Heart"], ["Russ Ballard", "Voices"], ["Scritti Politti", "Overnite"], ["Stevie Nicks with Tom Petty and the Heartbreakers", "Stop Draggin' My Heart Around"], ["The Cars", "Drive"], ["The Doobie Brothers", "It Keeps You Runnin'"], ["The Walker Brothers", "No Regrets"], ["Will to Power", "Baby, I Love Your Way / Freebird"]]}, {"k": "vcfm", "name": "Vice City FM", "tag": "big hair, bigger choruses", "cap": "", "facts": [["SOUND", "1980s pop and new wave"], ["HOSTS", "\"Weird Al\" Yankovic &amp; Brigitte Nielsen"], ["SINCE", "GTA IV's Episodes from Liberty City"]], "desc": "<p>The city's love letter to its own 1980s heyday: synths, saxophones and the Pointer Sisters. Weird Al Yankovic and Brigitte Nielsen share hosting, and the playlist is the longest on this page.</p>", "tracks": [["A Flock of Seagulls", "Wishing (If I Had a Photograph of You)"], ["ABC", "Vanity Kills"], ["Alexander O'Neal", "Fake"], ["Belouis Some", "Imagination"], ["Big Audio Dynamite", "E=MC2"], ["Billy Idol", "Flesh for Fantasy"], ["Billy Ocean", "Loverboy"], ["Blancmange", "Don't Tell Me"], ["Bryan Ferry", "Kiss and Tell"], ["Change", "Searching"], ["China Crisis", "Working with Fire and Steel"], ["Culture Club", "Miss Me Blind"], ["Curiosity Killed the Cat", "Name and Number"], ["Daryl Hall & John Oates", "Crime Pays"], ["Depeche Mode", "People Are People"], ["Donna Summer", "State of Independence"], ["Donna Summer", "She Works Hard for the Money"], ["Echo & the Bunnymen", "Lips Like Sugar"], ["Elton John", "Kiss the Bride"], ["Erasure", "Sometimes"], ["Feargal Sharkey", "A Good Heart"], ["Fine Young Cannibals", "Good Thing"], ["Fox the Fox", "Precious Little Diamond"], ["Genesis", "Land of Confusion"], ["Miami Sound Machine", "Dr. Beat"], ["Howard Jones", "Things Can Only Get Better"], ["Information Society", "What's on Your Mind (Pure Energy)"], ["Jellybean feat. Elisa Fiorillo", "Who Found Who"], ["Jermaine Stewart", "We Don't Have to Take Our Clothes Off"], ["Joe Jackson", "Steppin' Out"], ["Johnny Hates Jazz", "Shattered Dreams"], ["Kano", "Another Life"], ["Kenny Loggins", "I'm Alright"], ["Laid Back", "White Horse"], ["Laid Back", "Bakerman"], ["Lionel Richie", "Dancing on the Ceiling"], ["Lionel Richie", "All Night Long (All Night)"], ["Living in a Box", "Blow the House Down"], ["Matthew Wilder", "Break My Stride"], ["Missing Persons", "Words"], ["Naked Eyes", "When the Lights Go Out"], ["New Order", "Thieves Like Us"], ["Orchestral Manoeuvres in the Dark", "If You Leave"], ["Prefab Sprout", "Cars and Girls"], ["Propaganda", "Face to Face"], ["Red 7", "Heartbeat"], ["Robert Palmer", "I Didn't Mean to Turn You On"], ["Rod Stewart", "Infatuation"], ["Simple Minds", "Alive and Kicking"], ["Simple Minds", "Love Song"], ["Simply Red", "Money's Too Tight (To Mention)"], ["Stanley Clarke & George Duke", "Winners"], ["Steve Winwood", "Valerie"], ["Stevie Nicks", "Wild Heart"], ["Sting", "If You Love Somebody Set Them Free"], ["Talk Talk", "Talk Talk Talk"], ["Tears for Fears", "Head Over Heels"], ["The Cars", "You Might Think"], ["The Cure", "Just Like Heaven"], ["The Flirts", "Passion"], ["The Motels", "Suddenly Last Summer"], ["The Pointer Sisters", "Neutron Dance"], ["The Pointer Sisters", "Hot Together"], ["The Police", "Walking on the Moon"], ["The Sisters of Mercy", "Lucretia My Reflection"], ["Thompson Twins", "Love on Your Side"], ["The The", "This Is the Day"], ["Tina Turner", "Steamy Windows"], ["Tina Turner", "We Don't Need Another Hero (Thunderdome)"], ["Wang Chung", "Everybody Have Fun Tonight"], ["Wax", "Bridge to Your Heart"]]}, {"k": "stockyard", "name": "Stockyard FM", "tag": "warehouse hours", "cap": "", "facts": [["SOUND", "Indie dance and electronic"], ["HOSTS", "The Dare &amp; PinkPantheress"], ["HOME", "Stockyard, Vice City"]], "desc": "<p>Named after Vice City's Stockyard neighbourhood, this is the after-hours station: indie dance, club records and the odd blast of electroclash. The Dare and PinkPantheress host, and both sneak themselves onto the playlist.</p>", "tracks": [["!!!", "All U Writers"], ["!!! feat. Meah Pace", "Off the Grid"], ["ANOTR", "Paradise"], ["Elderbrook & Bob Moses", "Inner Light"], ["Caribou", "Never Come Back"], ["CMD/CTRL", "No Stress"], ["Digitalism", "Space Invaders"], ["Fischerspooner", "Emerge"], ["GENER8ION & Yung Lean", "STORM I"], ["Holy Ghost!", "Soon"], ["Hot Chip", "Hungry Child"], ["Justice feat. RIMON", "Afterimage"], ["Justice & Tame Impala", "One Night/All Night"], ["Kitty Ca$h, Thundercat & James Fauntleroy", "Time Machine"], ["LCD Soundsystem", "North American Scum"], ["Måneskin", "I WANNA BE YOUR SLAVE"], ["Mount Kimbie", "Monroe"], ["Nation of Language", "Across That Fine Line"], ["NEIL FRANCES", "You Move Me"], ["Overmono & Kindora", "Even Angels Ghost"], ["Overmono", "Good Lies"], ["PinkPantheress", "Illegal"], ["Psychic Mirrors", "French Dip"], ["Róisín Murphy", "Overpowered"], ["Shygirl, Empress Of & Kingdom", "4eva"], ["Tommy Richman", "MILLION DOLLAR BABY"], ["underscores", "Do It"], ["Wet Leg & The Dare", "mangetout (The Dare Remix)"], ["WhoMadeWho & Rampa", "Abu Simbel"], ["Zimmer90", "What Love Is"], ["Alex Frankel", "Playa Rosa Theme"], ["Favored Nations", "There Is Only Us"], ["Fcukers", "Only One"], ["Fred Jesse", "Bring Me Down"], ["HEALTH", "NIGHTMARE"], ["Slayyyter", "INTERNET $TAR"], ["The Dare", "Interesting"]]}];
+STATIONS[0].tracks=TRACKS;
+function renderStations(){
+ $("stJump").innerHTML=STATIONS.map(x=>`<a href="#radio" data-jump="st-${x.k}">${esc(x.name)}</a>`).join("");
+ $("stations").innerHTML=STATIONS.map(x=>`<article class="entry" id="st-${x.k}">
+<p class="kicker">STATION</p><h2>${esc(x.name)}</h2><div class="tag neon">${esc(x.tag)}</div>
+<div class="split"><div><div class="shot" data-img="${x.img||"r-"+x.k}"></div>${x.cap?`<p class="cap">${esc(x.cap)}</p>`:""}</div>
+<div class="facts cy"><h4>On air</h4><dl>${x.facts.map(([d,v])=>`<dt>${d}</dt><dd>${v}</dd>`).join("")}<dt>TRACKS</dt><dd>${x.tracks.length}</dd></dl></div></div>
+${x.desc}
+<div class="box rf"><h4>My ${esc(x.name)} top five</h4><div class="top5">${[0,1,2,3,4].map(i=>`<label>${i+1}<input data-t5="${x.k}" data-i="${i}" placeholder="Song" aria-label="${esc(x.name)} top five, number ${i+1}"></label>`).join("")}</div></div>
+<details class="more"><summary>Show all ${x.tracks.length} tracks</summary><ol class="tl">${x.tracks.map(([a,t])=>`<li><b>${esc(a)}</b> <span>${esc(t)}</span></li>`).join("")}</ol></details>
+<div class="notes" data-note="${x.k==="flash"?"radio":"r-"+x.k}"></div></article>`).join("")}
+renderStations();
+document.addEventListener("click",e=>{const j=e.target.closest("[data-jump]");if(!j)return;e.preventDefault();const el=$(j.dataset.jump);if(el)el.scrollIntoView({block:"start",inline:"nearest",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})});
+
 
 /* ---------- stats + saving ---------- */
 function stats(){const done=Object.values(S.m).reduce((s,a)=>s+a.filter(Boolean).length,0);
- $("sStory").textContent=`${done}/91`;const met=GOALS.filter(g=>(S.c[g[0]]||0)>=g[4]).length+(done===91?1:0);
+ $("sStory").textContent=`${done}/${TOTAL}`;const met=GOALS.filter(g=>(S.c[g[0]]||0)>=g[4]).length+(done===TOTAL?1:0);
  $("sGoals").textContent=`${met}/${GOALS.length+1}`;
  $("code").value=btoa(unescape(encodeURIComponent(JSON.stringify(S))))}
 let db=null,uid=null,ref=null,timer=null,writing=false,again=false;
@@ -667,16 +699,15 @@ for(const el of document.querySelectorAll("[data-img]")){try{const v=localStorag
 document.addEventListener("change",async e=>{const t=e.target;
  if(t.dataset.up){const f=t.files&&t.files[0];if(!f)return;const k=t.dataset.up,el=t.closest("[data-img]");const lab=el.querySelector("label");if(lab)lab.firstChild.textContent="Saving…";
   try{const d=await shrink(f);await saveImg(k,d)}catch(err){alertMsg("That image couldn't be read. Try a JPG or PNG.")}document.querySelectorAll(`[data-img="${k}"]`).forEach(renderShot);return}
- if(t.dataset.flag){if(t.checked)S.f[t.dataset.flag]=1;else delete S.f[t.dataset.flag];save();return}
+ if(t.dataset.flag){if(t.checked)S.f[t.dataset.flag]=1;else delete S.f[t.dataset.flag];clCounts();save();return}
  if(t.dataset.o!==undefined){S.o["c"+t.dataset.o][+t.dataset.j]=t.checked;t.closest(".m").classList.toggle("on",t.checked);save();return}
- if(t.dataset.tr!==undefined){if(t.checked)S.tr[+t.dataset.tr]=1;else delete S.tr[+t.dataset.tr];save();if($("trHide").checked)renderTracks();else $("trCount").textContent=`${Object.keys(S.tr).length} of ${TRACKS.length} heard`;return}
  if(t.matches("[data-c]")){const i=+t.dataset.c,j=+t.dataset.j;S.m["c"+i][j]=t.checked;const row=t.closest(".m");row.classList.toggle("on",t.checked);
   let nm=row.querySelector(".nm");if(t.checked&&!nm&&!known(i,j))row.insertAdjacentHTML("beforeend",nameInput(t.id,j));else if(!t.checked&&nm)nm.remove();refreshChapter(i);save();return}
  if(t.matches(".step input")){const k=t.dataset.k,def=ALL.find(r=>r[0]===k);let v=Math.max(0,Math.floor(+t.value||0));if(def[3])v=Math.min(def[3],v);if(v)S.c[k]=v;else delete S.c[k];refreshRow(k);save()}});
 document.addEventListener("input",e=>{const t=e.target;
  if(t.matches(".nm")){const v=t.value.trim();if(v)S.n[t.dataset.k]=v.slice(0,80);else delete S.n[t.dataset.k];save()}
  else if(t.dataset.nk){const v=t.value;if(v.trim())S.notes[t.dataset.nk]=v.slice(0,4000);else delete S.notes[t.dataset.nk];save()}
- else if(t.dataset.top!==undefined){S.top[+t.dataset.top]=t.value.slice(0,80);save()}});
+ else if(t.dataset.t5){const k=t.dataset.t5;(S.t5[k]=S.t5[k]||["","","","",""])[+t.dataset.i]=t.value.slice(0,80);save()}});
 let msgT;function alertMsg(m){const s=$("sync");s.textContent=m;clearTimeout(msgT);msgT=setTimeout(()=>s.textContent=ref?SYNC_OK:"Saved on this device",4000)}
 document.addEventListener("click",async e=>{const ab=e.target.closest("[data-all]");
  if(ab){const i=+ab.dataset.all;S.m["c"+i]=S.m["c"+i].map(()=>true);renderChapters();$("ch"+i).open=true;save();return}
@@ -696,8 +727,8 @@ $("vForm").addEventListener("submit",e=>{e.preventDefault();const n=$("vName").v
 document.addEventListener("click",e=>{const b=e.target.closest("[data-rmv]");if(!b)return;const id=b.dataset.rmv,x=S.v.find(v=>v.id===id);
  if(b.dataset.armed){S.v=S.v.filter(v=>v.id!==id);delete S.notes["u-"+id];saveImg("u-"+id,null);renderVenues();renderNotes();renderShots();save()}
  else{b.dataset.armed=1;b.textContent="Tap again to remove";setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent="Remove"}},3500)}});
-function renderAll(){document.querySelectorAll("[data-flag]").forEach(el=>el.checked=!!S.f[el.dataset.flag]);renderChapters();renderCounters();renderVenues();renderNotes();renderTracks();
- document.querySelectorAll("[data-top]").forEach(el=>el.value=S.top[+el.dataset.top]);renderShots();stats()}
+function renderAll(){document.querySelectorAll("[data-flag]").forEach(el=>el.checked=!!S.f[el.dataset.flag]);clCounts();renderChapters();renderCounters();renderVenues();renderNotes();
+ document.querySelectorAll("[data-t5]").forEach(el=>el.value=(S.t5[el.dataset.t5]||[])[+el.dataset.i]||"");renderShots();stats()}
 renderAll();renderShots();show();
 
 (async()=>{try{if(!window.claude||!claude.use)return;
